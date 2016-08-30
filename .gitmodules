@@ -1,0 +1,3 @@
+[submodule "lib\\ArduinoLibs"]
+	path = lib\\ArduinoLibs
+	url = https://github.com/rweather/arduinolibs.git
