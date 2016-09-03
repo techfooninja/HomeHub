@@ -15,7 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Arduino.ino" />
+    <None Include="sensor.ino">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="router.ino">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClInclude Include="__vm\.Arduino.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
