@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="router.ino" />
-    <None Include="sensor.ino" />
+    <None Include="Arduino.ino" />
   </ItemGroup>
+ 
 </Project>
