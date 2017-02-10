@@ -5,20 +5,19 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
-    using HomeHub.Shared;
 
-    public class TemperatureToStringConverter : IValueConverter
+    public class VisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var temp = ((Temperature)value).ConvertToScale(ClientSettings.TemperatureFormat);
-            return temp.Degrees.ToString();
+            return ((bool)value) ^ (((string)parameter) == "true") ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            return new Temperature(ClientSettings.TemperatureFormat, float.Parse((string)value));
+            return (((Visibility)value) == Visibility.Visible ? true : false) ^ (((string)parameter) == "true");
         }
     }
 }

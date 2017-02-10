@@ -72,7 +72,7 @@ namespace HomeHub.Shared
                     }
                     break;
             }
-
+            newTemp.Scale = scale;
             return newTemp;
         }
 

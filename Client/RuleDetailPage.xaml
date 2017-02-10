@@ -10,6 +10,7 @@
 
     <Page.Resources>
         <ResourceDictionary>
+            <local:VisibilityConverter x:Key="VisibilityConverter" />
             <local:TemperatureToStringConverter x:Key="TemperatureConverter" />
         </ResourceDictionary>
     </Page.Resources>
@@ -30,15 +31,15 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" Margin="10" Text="Low Temperature:" />
             <StackPanel Grid.Column="1" Grid.Row="0" Margin="10" Orientation="Horizontal">
-                <TextBox Text="{Binding LowTemperatureFormatted, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" InputScope="Number" TextChanging="NumberFilter" />
-                <TextBlock Margin="5" x:Name="LowTempUnit" />
+                <TextBox Text="{x:Bind Rule.LowTemperature, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" InputScope="Number" TextChanging="NumberFilter" />
+                <TextBlock Margin="5" Text="{x:Bind ClientSettings.TemperatureFormatUnit, Mode=OneWay}" />
             </StackPanel>
             <TextBlock Grid.Column="0" Grid.Row="1" Margin="10" Text="High Temperature:" />
             <StackPanel Grid.Column="1" Grid.Row="1" Margin="10" Orientation="Horizontal">
-                <TextBox Text="{Binding HighTemperatureFormatted, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" InputScope="Number" TextChanging="NumberFilter" />
-                <TextBlock Margin="5" x:Name="HighTempUnit" />
+                <TextBox Text="{x:Bind Rule.HighTemperature, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" InputScope="Number" TextChanging="NumberFilter" />
+                <TextBlock Margin="5" Text="{x:Bind ClientSettings.TemperatureFormatUnit, Mode=OneWay}" />
             </StackPanel>
-            <StackPanel x:Name="Default" Grid.ColumnSpan="2" Grid.Row="2">
+            <StackPanel x:Name="Default" Visibility="{x:Bind Rule.IsOverride,Converter={StaticResource VisibilityConverter},ConverterParameter=true}" Grid.ColumnSpan="2" Grid.Row="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -50,14 +51,14 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Margin="10" Text="Start Time:" />
-                    <TimePicker Grid.Column="1" Grid.Row="0" Margin="10" Time="{Binding StartTime, Mode=TwoWay}"  />
+                    <TimePicker Grid.Column="1" Grid.Row="0" Margin="10" Time="{x:Bind Rule.StartTime, Mode=TwoWay}"  />
                     <TextBlock Grid.Column="0" Grid.Row="1" Margin="10" Text="End Time:" />
-                    <TimePicker Grid.Column="1" Grid.Row="1" Margin="10" Time="{Binding EndTime, Mode=TwoWay}" />
+                    <TimePicker Grid.Column="1" Grid.Row="1" Margin="10" Time="{x:Bind Rule.EndTime, Mode=TwoWay}" />
                     <TextBlock Grid.Column="0" Grid.Row="2" Margin="10" Text="Is Enabled" />
-                    <CheckBox Grid.Column="1" Grid.Row="2" Margin="10" IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+                    <CheckBox Grid.Column="1" Grid.Row="2" Margin="10" IsChecked="{x:Bind Rule.IsEnabled, Mode=TwoWay}" />
                 </Grid>
             </StackPanel>
-            <StackPanel x:Name="Override" Grid.ColumnSpan="2" Grid.Row="2">
+            <StackPanel x:Name="Override" Visibility="{x:Bind Rule.IsOverride,Converter={StaticResource VisibilityConverter},ConverterParameter=false}" Grid.ColumnSpan="2" Grid.Row="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -68,9 +69,9 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Margin="10" Text="Expiration Time:" />
-                    <TimePicker Grid.Column="1" Grid.Row="0" Margin="10" Time="{Binding ExpirationTime, Mode=TwoWay}"  />
+                    <TimePicker Grid.Column="1" Grid.Row="0" Margin="10" Time="{x:Bind Rule.ExpirationTime, Mode=TwoWay}"  />
                     <TextBlock Grid.Column="0" Grid.Row="1" Margin="10" Text="Expiration Date:" />
-                    <DatePicker Grid.Column="1" Grid.Row="1" Margin="10" Date="{Binding ExpirationDate, Mode=TwoWay}" />
+                    <DatePicker Grid.Column="1" Grid.Row="1" Margin="10" Date="{x:Bind Rule.ExpirationDate, Mode=TwoWay}" />
                 </Grid>
             </StackPanel>
             

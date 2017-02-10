@@ -8,51 +8,15 @@
     using System.Threading.Tasks;
     using Windows.UI.Xaml.Controls;
 
-    class RuleProxy : IRule
+    class RuleProxy : Rule
     {
         public RuleProxy()
         {
             StartTime = DateTime.Now.TimeOfDay;
             EndTime = StartTime.Add(new TimeSpan(1, 0, 0));
-            LowTemperature = new Temperature(AppSettings.Instance.TemperatureFormat, 70);
-            HighTemperature = new Temperature(AppSettings.Instance.TemperatureFormat, 76);
+            //LowTemperature = new Temperature(ClientSettings.Instance.TemperatureFormat, 70);
+            //HighTemperature = new Temperature(ClientSettings.Instance.TemperatureFormat, 76);
             IsEnabled = true;
-        }
-
-        public TimeSpan EndTime
-        {
-            get;
-            set;
-        }
-
-        public Temperature HighTemperature
-        {
-            get;
-            set;
-        }
-
-        public string Id
-        {
-            get;
-            set;
-        }
-
-        public bool IsEnabled
-        {
-            get;
-            set;
-        }
-
-        public Temperature LowTemperature
-        {
-            get;
-            set;
-        }
-
-        public TimeSpan StartTime
-        {
-            get;
-            set;
         }
 
         public Symbol RuleSymbol
@@ -65,30 +29,6 @@
                     case "Override": return Symbol.ReportHacked;
                     default: return Symbol.Clock;
                 }
-            }
-        }
-
-        public Temperature LowTemperatureFormatted
-        {
-            get
-            {
-                return LowTemperature.ConvertToScale(AppSettings.Instance.TemperatureFormat);
-            }
-            set
-            {
-                LowTemperature = value;
-            }
-        }
-
-        public Temperature HighTemperatureFormatted
-        {
-            get
-            {
-                return HighTemperature.ConvertToScale(AppSettings.Instance.TemperatureFormat);
-            }
-            set
-            {
-                HighTemperature = value;
             }
         }
 

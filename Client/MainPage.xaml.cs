@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Navigation;
 using HomeHub.Shared;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using HomeHub.Client.ViewModels;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -29,72 +30,56 @@ namespace Client
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page, INotifyPropertyChanged
+    public sealed partial class MainPage : Page
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private ThermostatProxy _proxy;
-        private AppSettings _settings;
-
         public ThermostatProxy Proxy
         {
-            get
-            {
-                return _proxy;
-            }
-
-            set
-            {
-                _proxy = value;
-                OnPropertyChanged();
-            }
+            get;
+            set;
         }
 
-        public AppSettings Settings
+        public ThermostatViewModel Thermostat
         {
-            get
-            {
-                return _settings;
-            }
+            get;
+            set;
+        }
 
-            set
-            {
-                _settings = value;
-                OnPropertyChanged();
-            }
+        public HubSettingsViewModel HubSettings
+        {
+            get;
+            set;
+        }
+
+        public ClientSettingsViewModel ClientSettings
+        {
+            get;
+            set;
         }
 
         public MainPage()
         {
             this.InitializeComponent();
-            Settings = HomeHub.Client.AppSettings.Instance;
+            Thermostat = new ThermostatViewModel();
+            HubSettings = new HubSettingsViewModel();
+            ClientSettings = ClientSettingsViewModel.Instance;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            AppSettings.DataContext = Settings;
             await UpdateProxy();
         }
 
         private async Task UpdateProxy()
         {
-            DataContractJsonSerializer jsonizer = new DataContractJsonSerializer(typeof(ThermostatProxy));
-            Uri geturi = new Uri("http://192.168.4.181:8800/api/thermostat");
-            HttpClient client = new HttpClient();
-            HttpResponseMessage responseGet = await client.GetAsync(geturi);
-            var response = await responseGet.Content.ReadAsStringAsync();
-            //string response = "{\"PollingTime\":60,\"TargetBufferTime\":120,\"UseRules\":false,\"Devices\":[{\"FriendlyName\":\"Hub\",\"Id\":\"Hub\",\"IsOnline\":true,\"LastHeartBeat\":\"2017-01-31T22:24:47.8598496-08:00\",\"SupportedCommandFunctions\":{\"Heat\":true,\"Fan\":false},\"SupportedSensorReadings\":[\"HomeHub.Shared.TemperatureReading, HomeHub.Shared, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null\",\"HomeHub.Shared.MotionReading, HomeHub.Shared, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null\"]}],\"Rules\":[{\"HighTemperature\":{\"Scale\":1,\"Degrees\":76.0},\"LowTemperature\":{\"Scale\":1,\"Degrees\":70.0},\"IsEnabled\":true,\"StartTime\":\"10675199.02:48:05.4775807\",\"EndTime\":\"10675199.02:48:05.4775807\"}],\"CurrentAverageTemperature\":{\"Scale\":1,\"Degrees\":68.0},\"CurrentTemperatures\":[{\"DeviceId\":\"Hub\",\"ReadingTime\":\"2017-01-31T22:24:47.8598496-08:00\",\"Temperature\":{\"Scale\":1,\"Degrees\":68.0}}]}";
-            Proxy = JsonConvert.DeserializeObject<ThermostatProxy>(response, new ClientJsonConverter());
 
-            // Update the UI
-            // TODO: Find a more elegant solution
-            CurrentAverageTemperatureLabel.Text = Proxy.CurrentAverageTemperature.ToString();
-            HubSettings.DataContext = Proxy;
-            RuleListView.ItemsSource = Proxy.Rules;
+            Proxy = await ThermostatProxy.GetUpdates();
+
+            // Update the view model
+            HubSettings.PollingTime = Proxy.PollingTime;
+            HubSettings.TargetBufferTime = Proxy.TargetBufferTime;
+            HubSettings.UseRules = Proxy.UseRules;
+            Thermostat.CurrentTemperature = Proxy.CurrentAverageTemperature;
+            Thermostat.ReloadRules(Proxy.Rules);
         }
 
         private void AddRuleButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -104,8 +89,8 @@ namespace Client
 
         private void EditRuleButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var rule = Proxy.Rules.First();
-            Frame.Navigate(typeof(RuleDetailPage), new TransitionInfo() { Rule = rule, IsOverride = rule.Id == "Override" } );
+            var rule = (RuleViewModel)sender;
+            Frame.Navigate(typeof(RuleDetailPage), new TransitionInfo() { Rule = rule, IsOverride = rule.RuleType == typeof(TemporaryOverrideRule) } );
         }
 
         private void PollingTime_LostFocus(object sender, RoutedEventArgs e)
@@ -115,8 +100,8 @@ namespace Client
 
         private void OverrideButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var rules = Proxy.Rules.Where(r => r.Id == "Override");
-            IRule rule = null;
+            var rules = Thermostat.Rules.Where(r => r.RuleType == typeof(TemporaryOverrideRule));
+            RuleViewModel rule = null;
 
             if (rules.Count() > 0)
             {

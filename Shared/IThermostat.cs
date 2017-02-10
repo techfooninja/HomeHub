@@ -8,7 +8,7 @@
         int TargetBufferTime { get; }
         bool UseRules { get; }
         IEnumerable<IDevice> Devices { get; }
-        IEnumerable<IRule> Rules { get; }
+        IEnumerable<Rule> Rules { get; }
         Temperature CurrentAverageTemperature { get; }
         IEnumerable<TemperatureReading> CurrentTemperatures { get; }
     }

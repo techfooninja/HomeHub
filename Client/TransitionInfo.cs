@@ -6,10 +6,11 @@
     using System.Text;
     using System.Threading.Tasks;
     using HomeHub.Shared;
+    using ViewModels;
 
     class TransitionInfo
     {
-        public IRule Rule { get; set; }
+        public RuleViewModel Rule { get; set; }
         public bool IsOverride { get; set; }
     }
 }

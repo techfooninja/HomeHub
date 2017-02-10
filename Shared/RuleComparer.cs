@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
 
-    public class RuleComparer : Comparer<IRule>
+    public class RuleComparer : Comparer<Rule>
     {
-        public override int Compare(IRule x, IRule y)
+        public override int Compare(Rule x, Rule y)
         {
             if (ReferenceEquals(x, y))
             {

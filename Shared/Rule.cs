@@ -1,4 +1,4 @@
-﻿namespace HomeHub.Hub
+﻿namespace HomeHub.Shared
 {
     using System;
     using System.Collections.Generic;
@@ -6,60 +6,44 @@
     using System.Runtime.Serialization;
     using System.Text;
     using System.Threading.Tasks;
-    using HomeHub.Shared;
 
     [DataContract]
-    class ScheduleRule : IRule
+    public class Rule
     {
-        public ScheduleRule()
-        {
-            IsEnabled = false;
-            ApplicableDevices = Thermostat.Instance.Devices;
-            Id = String.Format("Schedule_{0}", IdCounter);
-        }
+        protected static TimeSpan _oneDay = new TimeSpan(1, 0, 0, 0);
 
-        private static int _idCounter = 1;
-        private static TimeSpan _oneDay = new TimeSpan(1, 0, 0, 0);
+        protected TimeSpan _startTime;
+        protected TimeSpan _endTime;
+        protected string _id;
 
-        private TimeSpan _startTime;
-        private TimeSpan _endTime;
-        private string _id;
-        
-        private static int IdCounter
+        [DataMember]
+        public string Id
         {
             get
             {
-                return _idCounter++;
+                return _id;
             }
+
             set
             {
-                _idCounter = value;
+                if (value != null)
+                {
+                    _id = value;
+                }
             }
         }
 
         [DataMember]
-        public Temperature HighTemperature
-        {
-            get;
-            set;
-        }
+        public Temperature LowTemperature { get; set; }
 
         [DataMember]
-        public Temperature LowTemperature
-        {
-            get;
-            set;
-        }
+        public Temperature HighTemperature { get; set; }
 
         [DataMember]
-        public bool IsEnabled
-        {
-            get;
-            set;
-        }
+        public virtual bool IsEnabled { get; set; }
 
         [DataMember]
-        public TimeSpan StartTime
+        public virtual TimeSpan StartTime
         {
             get
             {
@@ -79,8 +63,20 @@
             }
         }
 
+        public static Type GetTypeById(string id)
+        {
+            if (id == "Default")
+                return typeof(DefaultRule);
+            else if (id == "Override")
+                return typeof(TemporaryOverrideRule);
+            else if (id.StartsWith("Schedule"))
+                return typeof(ScheduleRule);
+            else
+                return typeof(Rule);
+        }
+
         [DataMember]
-        public TimeSpan EndTime
+        public virtual TimeSpan EndTime
         {
             get
             {
@@ -100,31 +96,7 @@
             }
         }
 
-        [DataMember]
-        public IEnumerable<IDevice> ApplicableDevices
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        public string Id
-        {
-            get
-            {
-                return _id;
-            }
-
-            private set
-            {
-                if (value != null)
-                {
-                    _id = value;
-                }
-            }
-        }
-
-        public bool IsApplicableNow()
+        public virtual bool IsApplicableNow()
         {
             TimeSpan now = DateTime.Now.TimeOfDay;
 
@@ -150,12 +122,11 @@
             }
         }
 
-        public TemperatureState ProcessReadings(IEnumerable<ISensorReading> readings)
+        public virtual TemperatureState ProcessReadings(IEnumerable<ISensorReading> readings)
         {
             Temperature average =
                 Temperature.Average(
                     readings.OfType<TemperatureReading>()
-                    .Where((tr) => ApplicableDevices.Where(d => d.Id == tr.DeviceId).Count() > 0)
                     .Select((tr) => tr.Temperature)
                     .AsEnumerable()
                 );

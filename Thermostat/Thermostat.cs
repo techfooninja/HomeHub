@@ -18,7 +18,7 @@
 
         private Timer _pollingTimer;
         private List<IDevice> _devices;
-        private List<IRule> _rules;
+        private List<Rule> _rules;
         private int _pollingTime;
         private TemperatureState _previousTempState;
         private TimeSpan _targetBufferTime;
@@ -32,7 +32,7 @@
 
             // TODO: Add other devices here
 
-            _rules = new List<IRule>();
+            _rules = new List<Rule>();
 
             // Add Default Rule, which should always be there
             _rules.Add(new DefaultRule());
@@ -92,7 +92,7 @@
         }
 
         [DataMember]
-        public IEnumerable<IRule> Rules
+        public IEnumerable<Rule> Rules
         {
             get
             {
@@ -109,7 +109,7 @@
         [DataMember]
         public IEnumerable<TemperatureReading> CurrentTemperatures { get; private set; }
 
-        public void AddRule(IRule newRule)
+        public void AddRule(Rule newRule)
         {
             _rules.Add(newRule);
         }
@@ -119,7 +119,7 @@
             return _rules.RemoveAll(r => r.Id == id) > 0;
         }
 
-        public void UpdateRule(IRule rule)
+        public void UpdateRule(Rule rule)
         {
             DeleteRule(rule.Id);
             AddRule(rule);

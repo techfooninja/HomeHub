@@ -13,7 +13,6 @@
         public override bool CanConvert(Type objectType)
         {
             if (objectType == typeof(IThermostat) ||
-                objectType == typeof(IRule) ||
                 objectType == typeof(IDevice))
             {
                 return true;
@@ -26,8 +25,6 @@
         {
             if (objectType == typeof(IThermostat))
                 return serializer.Deserialize(reader, typeof(ThermostatProxy));
-            else if (objectType == typeof(IRule))
-                return serializer.Deserialize(reader, typeof(RuleProxy));
             else if (objectType == typeof(IDevice))
                 return serializer.Deserialize(reader, typeof(DeviceProxy));
 
