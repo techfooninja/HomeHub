@@ -87,11 +87,8 @@ namespace Client
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 // Update the view model
-                HubSettings.PollingTime = Proxy.PollingTime;
-                HubSettings.TargetBufferTime = Proxy.TargetBufferTime;
-                HubSettings.UseRules = Proxy.UseRules;
-                Thermostat.CurrentTemperature = Proxy.CurrentAverageTemperature;
-                Thermostat.ReloadRules(Proxy.Rules);
+                Thermostat.Thermostat = Proxy;
+                HubSettings.UpdateSettings(Thermostat);
             });
         }
 

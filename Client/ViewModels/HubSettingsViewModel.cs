@@ -30,5 +30,13 @@
             get { return This.UseRules; }
             set { SetProperty(This.UseRules, value, () => This.UseRules = value); }
         }
+
+        public void UpdateSettings(ThermostatViewModel thermostat)
+        {
+            This.UpdateSettings(thermostat.Thermostat);
+            RaisePropertyChanged("PollingTime");
+            RaisePropertyChanged("TargetBufferTime");
+            RaisePropertyChanged("UseRules");
+        }
     }
 }

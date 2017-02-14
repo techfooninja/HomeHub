@@ -8,12 +8,12 @@
     using System.Threading.Tasks;
     using HomeHub.Shared;
 
-    public class ThermostatViewModel : NotificationBase
+    public class ThermostatViewModel : NotificationBase<ThermostatProxy>
     {
         ObservableCollection<RuleViewModel> _rules = new ObservableCollection<RuleViewModel>();
         Temperature _currentTemperature = new Temperature();
 
-        public ThermostatViewModel()
+        public ThermostatViewModel(ThermostatProxy proxy = null) : base(proxy)
         {
             ClientSettingsViewModel.Instance.PropertyChanged += TemperatureFormat_PropertyChanged;
         }
@@ -27,10 +27,26 @@
             }
         }
 
+        public ThermostatProxy Thermostat
+        {
+            get { return This; }
+            set
+            {
+                if (value != null)
+                {
+                    SetProperty(ref This, value);
+                    ReloadRules(value.Rules);
+                    RaisePropertyChanged("CurrentTemperature");
+                }
+            }
+        }
+
         public Temperature CurrentTemperature
         {
-            get { return _currentTemperature.ConvertToScale(ClientSettings.TemperatureFormat); }
-            set { SetProperty(ref _currentTemperature, value.ConvertToScale(ClientSettings.TemperatureFormat)); }
+            get
+            {
+                return (This.CurrentAverageTemperature ?? new Temperature()).ConvertToScale(ClientSettings.TemperatureFormat);
+            }
         }
 
         public string CurrentTemperatureUnit
@@ -44,7 +60,7 @@
             set { SetProperty(ref _rules, value); }
         }
 
-        public void ReloadRules(IEnumerable<Rule> rules)
+        private void ReloadRules(IEnumerable<Rule> rules)
         {
             _rules.Clear();
 
@@ -54,6 +70,8 @@
                 rvm.PropertyChanged += Rule_PropertyChanged;
                 _rules.Add(rvm);
             }
+
+            RaisePropertyChanged("Rules");
         }
 
         private void Rule_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

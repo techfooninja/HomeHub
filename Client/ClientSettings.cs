@@ -36,7 +36,7 @@
             }
             set
             {
-                SettingsHelper.SetProperty(value);
+                SettingsHelper.SetProperty((int)value);
             }
         }
 

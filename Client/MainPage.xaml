@@ -21,7 +21,7 @@
                 </PivotItem.Header>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock x:Name="CurrentAverageTemperatureLabel" FontSize="80" Text="{x:Bind Thermostat.CurrentTemperature, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" />
+                        <TextBlock x:Name="CurrentAverageTemperatureLabel" FontSize="80" Text="{x:Bind Thermostat.CurrentTemperature, Mode=OneWay, Converter={StaticResource TemperatureConverter}}" />
                         <TextBlock FontSize="80" Text="{x:Bind Thermostat.CurrentTemperatureUnit, Mode=OneWay}" />
                     </StackPanel>
                     <Button Content="Override" Tapped="OverrideButton_Tapped" />

@@ -28,6 +28,36 @@
               Thermostat.Instance);
         }
 
+        [UriFormat("/thermostat/setpollingtime")]
+        public IPutResponse SetPollingTime([FromContent]int pollingTime)
+        {
+            Debug.WriteLine("SetPollingTime");
+
+            Thermostat.Instance.PollingTime = pollingTime;
+
+            return new PutResponse(PutResponse.ResponseStatus.OK);
+        }
+
+        [UriFormat("/thermostat/settargetbuffertime")]
+        public IPutResponse SetTargetBufferTime([FromContent]int targetBufferTime)
+        {
+            Debug.WriteLine("SetTargetBufferTime");
+
+            Thermostat.Instance.TargetBufferTime = targetBufferTime;
+
+            return new PutResponse(PutResponse.ResponseStatus.OK);
+        }
+
+        [UriFormat("/thermostat/setuserules")]
+        public IPutResponse SetUseRules([FromContent]bool useRules)
+        {
+            Debug.WriteLine("SetUseRules");
+
+            Thermostat.Instance.UseRules = useRules;
+
+            return new PutResponse(PutResponse.ResponseStatus.OK);
+        }
+
         [UriFormat("/thermostat/addrule")]
         public IPutResponse AddRule([FromContent]ScheduleRule rule)
         {

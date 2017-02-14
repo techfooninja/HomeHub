@@ -12,18 +12,13 @@
     {
         private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
-        public static object GetProperty(object defaultValue, [CallerMemberName] String propertyName = null)
+        public static T GetProperty<T>(T defaultValue, [CallerMemberName] String propertyName = null)
         {
             if (!localSettings.Values.ContainsKey(propertyName))
             {
                 localSettings.Values[propertyName] = defaultValue;
             }
-            return localSettings.Values[propertyName];
-        }
-
-        public static T GetProperty<T>(T defaultValue, [CallerMemberName] String propertyName = null)
-        {
-            return (T)GetProperty(defaultValue, propertyName);
+            return (T)localSettings.Values[propertyName];
         }
 
         public static void SetProperty(object value, [CallerMemberName] String propertyName = null)
