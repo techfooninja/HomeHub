@@ -31,6 +31,7 @@ namespace HomeHub.Hub
 
             var restRouteHandler = new RestRouteHandler();
             restRouteHandler.RegisterController<ThermostatController>();
+            restRouteHandler.RegisterController<ProbeController>();
 
             var configuration = new HttpServerConfiguration()
                 .ListenOnPort(8800)

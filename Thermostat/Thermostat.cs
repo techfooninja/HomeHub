@@ -19,7 +19,6 @@
         private Timer _pollingTimer;
         private List<IDevice> _devices;
         private List<Rule> _rules;
-        private int _pollingTime;
         private TemperatureState _previousTempState;
         private TimeSpan _targetBufferTime;
 
@@ -42,14 +41,11 @@
             // Configure default state to be target. Sensors will need to be polled to take any action
             _previousTempState = TemperatureState.Target;
 
-            // Configure polling time, default to 60 seconds
-            _pollingTime = 60;
-
             // Configure target buffer time, default to 2 minutes
             TargetBufferTime = 120;
 
             // Set up timer
-            _pollingTimer = new Timer(TimerCallback, null, 0, _pollingTime * 1000);
+            _pollingTimer = new Timer(TimerCallback, null, 0, PollingTime * 1000);
         }
         
         [IgnoreDataMember]
@@ -70,20 +66,40 @@
         {
             get
             {
-                return _pollingTime;
+                return SettingsHelper.GetProperty<int>(60);
             }
             set
             {
-                _pollingTime = value;
+                SettingsHelper.SetProperty(value);
                 _pollingTimer.Change(1000, value * 1000);
             }
         }
 
         [DataMember]
-        public int TargetBufferTime { get; set; }
+        public int TargetBufferTime
+        {
+            get
+            {
+                return SettingsHelper.GetProperty<int>(120);
+            }
+            set
+            {
+                SettingsHelper.SetProperty(value);
+            }
+        }
 
         [DataMember]
-        public bool UseRules { get; set; }
+        public bool UseRules
+        {
+            get
+            {
+                return SettingsHelper.GetProperty<bool>(true);
+            }
+            set
+            {
+                SettingsHelper.SetProperty(value);
+            }
+        }
 
         [DataMember]
         public IEnumerable<IDevice> Devices

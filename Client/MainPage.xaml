@@ -90,12 +90,20 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Margin="10" Text="App Settings" FontSize="30" />
                         <TextBlock Grid.Column="0" Grid.Row="1" Margin="10" Text="Temperature Format:" />
                         <ComboBox Grid.Column="1" Grid.Row="1" Margin="10" x:Name="TemperatureFormatSelector" ItemsSource="{Binding PossibleTemperatureFormats}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" />
                         <TextBlock Grid.Column="0" Grid.Row="2" Margin="10" Text="Refresh Interval:" />
                         <TextBox Grid.Column="1" Grid.Row="2" Margin="10" Text="{Binding RefreshInterval, Mode=TwoWay}" />
+                        <TextBlock Grid.Column="0" Grid.Row="3" Margin="10" Text="Hostname: " />
+                        <TextBox Grid.Column="1" Grid.Row="3" Margin="10" Text="{Binding Hostname, Mode=TwoWay}" />
+                        <TextBlock Grid.Column="0" Grid.Row="4" Margin="10" Text="Port: " />
+                        <TextBox Grid.Column="1" Grid.Row="4" Margin="10" Text="{Binding Port, Mode=TwoWay}" InputScope="Number" />
+                        <Button Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Center" Content="Search for Hub" Tapped="{x:Bind ClientSettings.ProbeForHub}" />
                     </Grid>
                 </StackPanel>
             </PivotItem>

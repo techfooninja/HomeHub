@@ -22,6 +22,8 @@ using HomeHub.Shared;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using HomeHub.Client.ViewModels;
+using System.Threading;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -56,30 +58,41 @@ namespace Client
             set;
         }
 
+        private Timer _pollingTimer;
+
         public MainPage()
         {
             this.InitializeComponent();
             Thermostat = new ThermostatViewModel();
             HubSettings = new HubSettingsViewModel();
             ClientSettings = ClientSettingsViewModel.Instance;
+
+            _pollingTimer = new Timer(TimerCallback, null, 0, ClientSettings.RefreshInterval * 1000);
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            await UpdateProxy();
+            
         }
 
-        private async Task UpdateProxy()
+        private async void TimerCallback(object state)
         {
+            if (String.IsNullOrEmpty(ClientSettings.Hostname))
+            {
+                return;
+            }
 
             Proxy = await ThermostatProxy.GetUpdates();
 
-            // Update the view model
-            HubSettings.PollingTime = Proxy.PollingTime;
-            HubSettings.TargetBufferTime = Proxy.TargetBufferTime;
-            HubSettings.UseRules = Proxy.UseRules;
-            Thermostat.CurrentTemperature = Proxy.CurrentAverageTemperature;
-            Thermostat.ReloadRules(Proxy.Rules);
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                // Update the view model
+                HubSettings.PollingTime = Proxy.PollingTime;
+                HubSettings.TargetBufferTime = Proxy.TargetBufferTime;
+                HubSettings.UseRules = Proxy.UseRules;
+                Thermostat.CurrentTemperature = Proxy.CurrentAverageTemperature;
+                Thermostat.ReloadRules(Proxy.Rules);
+            });
         }
 
         private void AddRuleButton_Tapped(object sender, TappedRoutedEventArgs e)
