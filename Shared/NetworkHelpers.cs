@@ -22,6 +22,9 @@
 
     public static class NetworkHelpers
     {
+        private static HttpClient _client = null;
+        private static object _lock = new object();
+
         public static string GetLocalIp()
         {
             var icp = NetworkInformation.GetInternetConnectionProfile();
@@ -40,24 +43,18 @@
         public static string GetLocalDomainName()
         {
             return Dns.GetHostName();
-            /*var icp = NetworkInformation.GetInternetConnectionProfile();
-            HostName hostname = null;
-
-            if (icp?.NetworkAdapter != null)
-            {
-                hostname = NetworkInformation.GetHostNames().FirstOrDefault(
-                        hn =>
-                            hn.Type == Windows.Networking.HostNameType.DomainName &&
-                            hn.DisplayName.IndexOf(".local", StringComparison.OrdinalIgnoreCase) < 0
-                        );
-            }
-
-            return hostname?.DisplayName;*/
         }
 
         public static async Task<HttpResponseMessage> SendRequest(RequestType type, Uri uri, string content)
         {
-            HttpClient client = new HttpClient();
+            lock (_lock)
+            {
+                if (_client == null)
+                {
+                    _client = new HttpClient();
+                }
+            }
+
             HttpStringContent httpContent = null;
 
             if (content != null)
@@ -69,10 +66,10 @@
             {
                 switch (type)
                 {
-                    case RequestType.Get: response = await client.GetAsync(uri); break;
-                    case RequestType.Post: response = await client.PostAsync(uri, httpContent); break;
-                    case RequestType.Put: response = await client.PutAsync(uri, httpContent); break;
-                    case RequestType.Delete: response = await client.DeleteAsync(uri); break;
+                    case RequestType.Get: response = await _client.GetAsync(uri); break;
+                    case RequestType.Post: response = await _client.PostAsync(uri, httpContent); break;
+                    case RequestType.Put: response = await _client.PutAsync(uri, httpContent); break;
+                    case RequestType.Delete: response = await _client.DeleteAsync(uri); break;
                     default: break;
                 }
             }
@@ -89,17 +86,17 @@
             return response;
         }
 
-        public static async Task<bool> Ping(string host)
+        public static async Task<string> Ping(string host)
         {
             try
             {
                 IPHostEntry he = await Dns.GetHostEntryAsync(host);
                 Debug.WriteLine("Found: " + he.HostName);
-                return true;
+                return he.HostName;
             }
             catch
             {
-                return false;
+                return null;
             }
         }
     }

@@ -32,7 +32,7 @@
         {
             get
             {
-                return SettingsHelper.GetProperty<TemperatureScale>(TemperatureScale.Fahrenheit);
+                return (TemperatureScale)SettingsHelper.GetProperty((int)TemperatureScale.Fahrenheit);
             }
             set
             {
@@ -83,7 +83,7 @@
             bool changed = false;
             string ipAddress = NetworkHelpers.GetLocalIp();
             string[] ipParts = ipAddress.Split('.');
-            Task<bool>[] tasks = new Task<bool>[maxSubnet];
+            Task<string>[] tasks = new Task<string>[maxSubnet];
 
             for (int i = 0; i < maxSubnet; i++)
             {
@@ -91,24 +91,20 @@
                 tasks[i] = Task.Run(async () => { Debug.WriteLine("Checking " + currentIp); return await NetworkHelpers.Ping(currentIp); });
             }
 
+            await Task.WhenAll(tasks);
+
             for (int j = 0; j < maxSubnet; j++)
             {
-                Debug.WriteLine("Before Await");
-                bool result = await tasks[j];
-                Debug.WriteLine("After Await");
-                // TODO: Break this up into two methods? Maybe there's something about spending too much time in a single method?
+                string hostname = await tasks[j];
 
-                if (result)
+                if (!String.IsNullOrEmpty(hostname))
                 {
-                    string currentIp = String.Join(".", ipParts[0], ipParts[1], ipParts[2], j);
-                    Debug.WriteLine("Probing " + currentIp);
-                    var host = await Dns.GetHostEntryAsync(currentIp);
-                    Uri uri = new Uri(String.Format("http://{0}:{1}/api/probe", host.HostName, port));
-                    var response = NetworkHelpers.SendRequest(RequestType.Get, uri, null);
+                    Uri uri = new Uri(String.Format("http://{0}:{1}/api/probe", hostname, port));
+                    var response = await NetworkHelpers.SendRequest(RequestType.Get, uri, null);
 
-                    if (response != null && host.HostName != Hostname)
+                    if (response != null && response.IsSuccessStatusCode && hostname != Hostname)
                     {
-                        Hostname = host.HostName;
+                        Hostname = hostname;
                         changed = true;
                         break;
                     }

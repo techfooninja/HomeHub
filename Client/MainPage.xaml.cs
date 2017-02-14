@@ -72,7 +72,7 @@ namespace Client
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
+            // TODO: Add loading UI all over the app whenever an async web call is made
         }
 
         private async void TimerCallback(object state)
