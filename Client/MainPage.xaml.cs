@@ -58,6 +58,12 @@ namespace Client
             set;
         }
 
+        public ProgressViewModel Progress
+        {
+            get;
+            set;
+        }
+
         private Timer _pollingTimer;
 
         public MainPage()
@@ -66,6 +72,7 @@ namespace Client
             Thermostat = new ThermostatViewModel();
             HubSettings = new HubSettingsViewModel();
             ClientSettings = ClientSettingsViewModel.Instance;
+            Progress = ProgressViewModel.Instance;
 
             _pollingTimer = new Timer(TimerCallback, null, 0, ClientSettings.RefreshInterval * 1000);
         }
@@ -82,13 +89,21 @@ namespace Client
                 return;
             }
 
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Progress.NonBlockingProgressText = "Getting updates from hub...";
+                Progress.IsNonBlockingProgress = true;
+            });
+
             Proxy = await ThermostatProxy.GetUpdates();
 
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 // Update the view model
+                // TODO: Stale rules are getting passed in here
                 Thermostat.Thermostat = Proxy;
                 HubSettings.UpdateSettings(Thermostat);
+                Progress.IsNonBlockingProgress = false;
             });
         }
 
@@ -119,6 +134,26 @@ namespace Client
             }
 
             Frame.Navigate(typeof(RuleDetailPage), new TransitionInfo() { Rule = rule, IsOverride = true });
+        }
+
+        private async void StartBlockingProgress_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Progress.BlockingProgressText = "Reloading data";
+            Progress.IsBlockingProgress = true;
+
+            await Task.Delay(10000);
+
+            Progress.IsBlockingProgress = false;
+        }
+
+        private async void StartNonBlockingProgress_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Progress.NonBlockingProgressText = "Refreshing data";
+            Progress.IsNonBlockingProgress = true;
+
+            await Task.Delay(10000);
+
+            Progress.IsNonBlockingProgress = false;
         }
     }
 }

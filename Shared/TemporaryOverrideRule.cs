@@ -10,7 +10,7 @@
     [DataContract]
     public class TemporaryOverrideRule : Rule
     {
-        private static TimeSpan _minTime = TimeSpan.MinValue;
+        private static TimeSpan _minTime = TimeSpan.Zero;
 
         public TemporaryOverrideRule()
         {

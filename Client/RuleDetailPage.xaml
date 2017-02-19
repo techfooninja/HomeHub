@@ -79,8 +79,7 @@
                 <Button Margin="30" HorizontalAlignment="Center" Content="Cancel" Tapped="CancelButton_Tapped" />
                 <Button Margin="30" HorizontalAlignment="Center" Content="Apply" Tapped="ApplyButton_Tapped" />
             </StackPanel>
-            
         </Grid>
-
+        <local:ProgressView IsBlockingVisible="{x:Bind Progress.IsBlockingProgress, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" IsNonBlockingVisible="{x:Bind Progress.IsNonBlockingProgress, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" BlockingText="{x:Bind Progress.BlockingProgressText, Mode=OneWay}" NonBlockingText="{x:Bind Progress.NonBlockingProgressText, Mode=OneWay}" ProgressRingDiameter="150" NonBlockingTextFontSize="12" BlockingTextFontSize="24" />
     </Grid>
 </Page>

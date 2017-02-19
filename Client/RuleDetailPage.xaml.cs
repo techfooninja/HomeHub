@@ -30,9 +30,17 @@ namespace HomeHub.Client
         public RuleDetailPage()
         {
             this.InitializeComponent();
+            ClientSettings = ClientSettingsViewModel.Instance;
+            Progress = ProgressViewModel.Instance;
         }
 
         public ClientSettingsViewModel ClientSettings
+        {
+            get;
+            set;
+        }
+
+        public ProgressViewModel Progress
         {
             get;
             set;

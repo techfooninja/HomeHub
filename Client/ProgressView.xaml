@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="HomeHub.Client.ProgressView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HomeHub.Client"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <local:VisibilityConverter x:Key="VisibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid Visibility="{x:Bind IsBlockingVisible, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Rectangle Grid.RowSpan="3" Opacity=".25" Fill="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            <ProgressRing Grid.Row="1" Margin="25" VerticalAlignment="Center" HorizontalAlignment="Center" IsActive="True" Width="{x:Bind ProgressRingDiameter, Mode=OneWay}" Height="{x:Bind ProgressRingDiameter, Mode=OneWay}" />
+            <TextBlock Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="WrapWholeWords" Text="{x:Bind BlockingText, Mode=OneWay}" FontSize="{x:Bind BlockingTextFontSize, Mode=OneWay}" />
+        </Grid>
+        <Grid Visibility="{x:Bind IsNonBlockingVisible, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ProgressBar Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" IsIndeterminate="True" />
+            <TextBlock Grid.Row="1" Margin="10,5,10,0" Text="{x:Bind NonBlockingText, Mode=OneWay}" FontSize="{x:Bind NonBlockingTextFontSize, Mode=OneWay}" />
+        </Grid>
+    </Grid>
+</UserControl>

@@ -147,6 +147,11 @@
 
         public async void Save()
         {
+            ProgressViewModel progress = ProgressViewModel.Instance;
+
+            progress.BlockingProgressText = "Saving changes";
+            progress.IsBlockingProgress = true;
+
             if (IsOverride)
             {
                 var response = await ThermostatProxy.SetHoldTemp(This, ExpirationDate.DateTime.Add(ExpirationTime));
@@ -165,6 +170,8 @@
                     // TODO: Throw exception when it fails
                 }
             }
+
+            progress.IsBlockingProgress = false;
         }
     }
 }

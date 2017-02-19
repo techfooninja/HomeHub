@@ -87,7 +87,14 @@
 
         public async void ProbeForHub()
         {
+            ProgressViewModel progress = ProgressViewModel.Instance;
+            progress.BlockingProgressText = "Searching for hub";
+            progress.IsBlockingProgress = true;
+
             bool didChange = await ClientSettings.ProbeForHub();
+
+            progress.IsBlockingProgress = false;
+
             // TODO: Pop UI for change
             if (didChange)
             {

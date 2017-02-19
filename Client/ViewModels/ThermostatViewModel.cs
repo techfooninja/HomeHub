@@ -35,7 +35,7 @@
                 if (value != null)
                 {
                     SetProperty(ref This, value);
-                    ReloadRules(value.Rules);
+                    ReloadRules(This.Rules);
                     RaisePropertyChanged("CurrentTemperature");
                 }
             }

@@ -69,7 +69,7 @@
                 return typeof(DefaultRule);
             else if (id == "Override")
                 return typeof(TemporaryOverrideRule);
-            else if (id.StartsWith("Schedule"))
+            else if (id != null && id.StartsWith("Schedule"))
                 return typeof(ScheduleRule);
             else
                 return typeof(Rule);

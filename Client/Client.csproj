@@ -99,6 +99,9 @@
     <Compile Include="ClientJsonConverter.cs" />
     <Compile Include="DeviceProxy.cs" />
     <Compile Include="HubSettings.cs" />
+    <Compile Include="ProgressView.xaml.cs">
+      <DependentUpon>ProgressView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RuleDetailPage.xaml.cs">
       <DependentUpon>RuleDetailPage.xaml</DependentUpon>
     </Compile>
@@ -114,6 +117,7 @@
     <Compile Include="ViewModels\ClientSettingsViewModel.cs" />
     <Compile Include="ViewModels\HubSettingsViewModel.cs" />
     <Compile Include="ViewModels\NotificationBase.cs" />
+    <Compile Include="ViewModels\ProgressViewModel.cs" />
     <Compile Include="ViewModels\RuleViewModel.cs" />
     <Compile Include="ViewModels\ThermostatViewModel.cs" />
     <Compile Include="VisibilityConverter.cs" />
@@ -139,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ProgressView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RuleDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

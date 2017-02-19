@@ -11,6 +11,7 @@
     using Windows.Networking.Connectivity;
     using Windows.Networking.Sockets;
     using Windows.Web.Http;
+    using Windows.Web.Http.Filters;
 
     public enum RequestType
     {
@@ -51,7 +52,9 @@
             {
                 if (_client == null)
                 {
-                    _client = new HttpClient();
+                    var filter = new HttpBaseProtocolFilter();
+                    filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.NoCache;
+                    _client = new HttpClient(filter);
                 }
             }
 

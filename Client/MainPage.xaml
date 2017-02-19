@@ -6,15 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <Page.Resources>
         <ResourceDictionary>
+            <local:VisibilityConverter x:Key="VisibilityConverter" />
             <local:TemperatureToStringConverter x:Key="TemperatureConverter" />
         </ResourceDictionary>
     </Page.Resources>
     
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Pivot>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">        
+        <Pivot Margin="0,20,0,0">
             <PivotItem>
                 <PivotItem.Header>
                     <SymbolIcon Symbol="Home" />
@@ -56,6 +57,10 @@
                 <PivotItem.Header>
                     <SymbolIcon Symbol="AttachCamera" />
                 </PivotItem.Header>
+                <StackPanel>
+                    <Button Content="StartBlockingProgress" Tapped="StartBlockingProgress_Tapped" />
+                    <Button Content="StartNonBlockingProgress" Tapped="StartNonBlockingProgress_Tapped" />
+                </StackPanel>
             </PivotItem>
             <PivotItem>
                 <PivotItem.Header>
@@ -108,5 +113,6 @@
                 </StackPanel>
             </PivotItem>
         </Pivot>
+        <local:ProgressView IsBlockingVisible="{x:Bind Progress.IsBlockingProgress, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" IsNonBlockingVisible="{x:Bind Progress.IsNonBlockingProgress, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" BlockingText="{x:Bind Progress.BlockingProgressText, Mode=OneWay}" NonBlockingText="{x:Bind Progress.NonBlockingProgressText, Mode=OneWay}" ProgressRingDiameter="150" NonBlockingTextFontSize="12" BlockingTextFontSize="24" />
     </Grid>
 </Page>
