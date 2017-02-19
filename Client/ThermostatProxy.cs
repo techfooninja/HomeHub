@@ -86,6 +86,13 @@
             return response;
         }
 
+        public static async Task<HttpResponseMessage> DeleteRule(Rule rule)
+        {
+            Uri uri = new Uri(String.Format("http://{0}:{1}/api/thermostat/deleterule/{2}", ClientSettings.Hostname, ClientSettings.Port, rule.Id));
+            var response = await NetworkHelpers.SendRequest(RequestType.Delete, uri, null);
+            return response;
+        }
+
         public static async Task<HttpResponseMessage> SetHoldTemp(Rule rule, DateTime expirationDate)
         {
             Uri uri = new Uri(String.Format("http://{0}:{1}/api/thermostat/setholdtemp?expiration={2}", ClientSettings.Hostname, ClientSettings.Port, expirationDate.ToString("o")));

@@ -113,6 +113,7 @@
     <Compile Include="TemperatureScaleToStringConverter.cs" />
     <Compile Include="TemperatureToStringConverter.cs" />
     <Compile Include="ThermostatProxy.cs" />
+    <Compile Include="TimeSpanToStringConverter.cs" />
     <Compile Include="TransitionInfo.cs" />
     <Compile Include="ViewModels\ClientSettingsViewModel.cs" />
     <Compile Include="ViewModels\HubSettingsViewModel.cs" />

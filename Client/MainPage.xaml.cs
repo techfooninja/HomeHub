@@ -100,7 +100,6 @@ namespace Client
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 // Update the view model
-                // TODO: Stale rules are getting passed in here
                 Thermostat.Thermostat = Proxy;
                 HubSettings.UpdateSettings(Thermostat);
                 Progress.IsNonBlockingProgress = false;

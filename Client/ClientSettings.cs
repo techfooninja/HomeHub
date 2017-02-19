@@ -91,8 +91,6 @@
                 tasks[i] = Task.Run(async () => { Debug.WriteLine("Checking " + currentIp); return await NetworkHelpers.Ping(currentIp); });
             }
 
-            await Task.WhenAll(tasks);
-
             for (int j = 0; j < maxSubnet; j++)
             {
                 string hostname = await tasks[j];
@@ -102,7 +100,7 @@
                     Uri uri = new Uri(String.Format("http://{0}:{1}/api/probe", hostname, port));
                     var response = await NetworkHelpers.SendRequest(RequestType.Get, uri, null);
 
-                    if (response != null && response.IsSuccessStatusCode && hostname != Hostname)
+                    if (response != null && response.IsSuccessStatusCode && !hostname.Equals(Hostname, StringComparison.OrdinalIgnoreCase))
                     {
                         Hostname = hostname;
                         changed = true;

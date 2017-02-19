@@ -55,10 +55,7 @@
             get { return This.IsEnabled; }
             set
             {
-                if (RuleType == typeof(ScheduleRule))
-                {
-                    SetProperty(This.IsEnabled, value, () => This.IsEnabled = value);
-                }
+                SetProperty(This.IsEnabled, value, () => This.IsEnabled = value);
             }
         }
 
@@ -67,10 +64,7 @@
             get { return This.StartTime; }
             set
             {
-                if (RuleType == typeof(ScheduleRule))
-                {
-                    SetProperty(This.StartTime, value, () => This.StartTime = value);
-                }
+                SetProperty(This.StartTime, value, () => This.StartTime = value);
             }
         }
 
@@ -79,10 +73,7 @@
             get { return This.EndTime; }
             set
             {
-                if (RuleType == typeof(ScheduleRule))
-                {
-                    SetProperty(This.EndTime, value, () => This.EndTime = value);
-                }
+                SetProperty(This.EndTime, value, () => This.EndTime = value);
             }
         }
 
@@ -170,6 +161,19 @@
                     // TODO: Throw exception when it fails
                 }
             }
+
+            progress.IsBlockingProgress = false;
+        }
+
+        public async void Delete()
+        {
+            ProgressViewModel progress = ProgressViewModel.Instance;
+
+            progress.BlockingProgressText = "Deleting rule";
+            progress.IsBlockingProgress = true;
+
+            var response = await ThermostatProxy.DeleteRule(This);
+            // TODO: Throw exception when it fails
 
             progress.IsBlockingProgress = false;
         }
