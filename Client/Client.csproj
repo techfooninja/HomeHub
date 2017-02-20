@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="ClientSettings.cs" />
     <Compile Include="ClientJsonConverter.cs" />
+    <Compile Include="DateTimeToStringConverter.cs" />
     <Compile Include="DeviceProxy.cs" />
     <Compile Include="HubSettings.cs" />
     <Compile Include="ProgressView.xaml.cs">

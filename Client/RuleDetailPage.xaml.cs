@@ -68,15 +68,21 @@ namespace HomeHub.Client
                 Rule.IsNewRule = info.Rule == null;
             }
 
-            Rule.ExpirationDate = DateTime.Now.Date;
-            Rule.ExpirationTime = DateTime.Now.TimeOfDay.Add(new TimeSpan(1, 0, 0));
+            if (Rule.IsOverride && Rule.ExpirationDateTime == default(DateTime))
+            {
+                // Set the default expiration date if it isn't already set
+                var tempExpiration = DateTime.Now.Add(new TimeSpan(1, 0, 0));
+                Rule.ExpirationDate = tempExpiration.Date;
+                Rule.ExpirationTime = tempExpiration.TimeOfDay;
+            }
+
             this.DataContext = Rule;
         }
 
         private async void ApplyButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Debug.WriteLine("Apply Button Pressed");
-            Rule.Save();
+            await Rule.Save();
         }
 
         private void CancelButton_Tapped(object sender, TappedRoutedEventArgs e)

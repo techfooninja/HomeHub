@@ -32,6 +32,18 @@
             }
         }
 
+        public override DateTime Expiration
+        {
+            get
+            {
+                return default(DateTime);
+            }
+            set
+            {
+                /* Do Nothing */
+            }
+        }
+
         [DataMember]
         public IEnumerable<IDevice> ApplicableDevices
         {

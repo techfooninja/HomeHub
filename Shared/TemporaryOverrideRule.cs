@@ -16,13 +16,6 @@
         {
             Id = "Override";
         }
-        
-        [DataMember]
-        public DateTime Expiration
-        {
-            get;
-            set;
-        }
 
         [DataMember]
         public override TimeSpan StartTime

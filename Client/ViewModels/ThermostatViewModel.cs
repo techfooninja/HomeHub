@@ -7,6 +7,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using HomeHub.Shared;
+    using System.ComponentModel;
 
     public class ThermostatViewModel : NotificationBase<ThermostatProxy>
     {
@@ -74,9 +75,16 @@
             RaisePropertyChanged("Rules");
         }
 
-        private void Rule_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Rule_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            
+            if (e.PropertyName == "Rule")
+                RaisePropertyChanged("Rules");
+
+            if (e.PropertyName == "Deleted")
+            {
+                _rules.Remove((RuleViewModel)sender);
+                RaisePropertyChanged("Rules");
+            }
         }
     }
 }

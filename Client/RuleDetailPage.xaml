@@ -29,14 +29,14 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" Margin="10" Text="Low Temperature:" />
+            <TextBlock Grid.Column="0" Grid.Row="0" Margin="10" Text="High Temperature:" />
             <StackPanel Grid.Column="1" Grid.Row="0" Margin="10" Orientation="Horizontal">
-                <TextBox Text="{x:Bind Rule.LowTemperature, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" InputScope="Number" TextChanging="NumberFilter" />
+                <TextBox Text="{x:Bind Rule.HighTemperature, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" InputScope="Number" TextChanging="NumberFilter" />
                 <TextBlock Margin="5" Text="{x:Bind ClientSettings.TemperatureFormatUnit, Mode=OneWay}" />
             </StackPanel>
-            <TextBlock Grid.Column="0" Grid.Row="1" Margin="10" Text="High Temperature:" />
+            <TextBlock Grid.Column="0" Grid.Row="1" Margin="10" Text="Low Temperature:" />
             <StackPanel Grid.Column="1" Grid.Row="1" Margin="10" Orientation="Horizontal">
-                <TextBox Text="{x:Bind Rule.HighTemperature, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" InputScope="Number" TextChanging="NumberFilter" />
+                <TextBox Text="{x:Bind Rule.LowTemperature, Mode=TwoWay, Converter={StaticResource TemperatureConverter}}" InputScope="Number" TextChanging="NumberFilter" />
                 <TextBlock Margin="5" Text="{x:Bind ClientSettings.TemperatureFormatUnit, Mode=OneWay}" />
             </StackPanel>
             <StackPanel x:Name="Default" Visibility="{x:Bind Rule.IsOverride,Converter={StaticResource VisibilityConverter},ConverterParameter=true}" Grid.ColumnSpan="2" Grid.Row="2">

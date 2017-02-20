@@ -108,13 +108,18 @@ namespace Client
 
         private void AddRuleButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Frame.Navigate(typeof(RuleDetailPage));
+            NavigateToRuleDetail();
         }
 
         private void EditRuleButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var rule = (RuleViewModel)sender;
-            Frame.Navigate(typeof(RuleDetailPage), new TransitionInfo() { Rule = rule, IsOverride = rule.RuleType == typeof(TemporaryOverrideRule) } );
+            NavigateToRuleDetail(new TransitionInfo() { Rule = rule, IsOverride = rule.RuleType == typeof(TemporaryOverrideRule) });
+        }
+
+        private void NavigateToRuleDetail(TransitionInfo info = null)
+        {
+            Frame.Navigate(typeof(RuleDetailPage), info);
         }
 
         private void PollingTime_LostFocus(object sender, RoutedEventArgs e)
@@ -124,14 +129,11 @@ namespace Client
 
         private void OverrideButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var rules = Thermostat.Rules.Where(r => r.RuleType == typeof(TemporaryOverrideRule));
             RuleViewModel rule = null;
-
-            if (rules.Count() > 0)
+            if (Thermostat.Rules[0].RuleType == typeof(TemporaryOverrideRule))
             {
-                rule = rules.First();
+                rule = Thermostat.Rules[0];
             }
-
             Frame.Navigate(typeof(RuleDetailPage), new TransitionInfo() { Rule = rule, IsOverride = true });
         }
 
@@ -153,6 +155,13 @@ namespace Client
             await Task.Delay(10000);
 
             Progress.IsNonBlockingProgress = false;
+        }
+
+        private void RuleListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ListView list = (ListView)sender;
+            RuleViewModel rule = (RuleViewModel)e.ClickedItem;
+            NavigateToRuleDetail(new TransitionInfo() { Rule = rule, IsOverride = rule.IsOverride });
         }
     }
 }

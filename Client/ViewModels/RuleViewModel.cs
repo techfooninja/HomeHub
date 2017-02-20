@@ -13,14 +13,17 @@
     {
         private bool _isNewRule;
         private bool _isOverride;
-        private TimeSpan _expirationTime;
-        private DateTimeOffset _expirationDate;
 
         public RuleViewModel(Rule rule = null) : base(rule)
         {
             ClientSettingsViewModel.Instance.PropertyChanged += TemperatureFormat_PropertyChanged;
             LowTemperature = This.LowTemperature ?? new Temperature();
             HighTemperature = This.HighTemperature ?? new Temperature();
+
+            if (rule != null && Rule.GetTypeById(rule.Id) == typeof(TemporaryOverrideRule))
+            {
+                _isOverride = true;
+            }
         }
 
         private void TemperatureFormat_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -77,6 +80,14 @@
             }
         }
 
+        public bool HasTimes
+        {
+            get
+            {
+                return RuleType == typeof(ScheduleRule);
+            }
+        }
+
         public bool IsNewRule
         {
             get { return _isNewRule; }
@@ -97,19 +108,34 @@
 
         public DateTimeOffset ExpirationDate
         {
-            get { return _expirationDate; }
+            get { return This.Expiration.Date; }
             set
             {
-                SetProperty(_expirationDate, value, () => _expirationDate = value);
+                SetProperty(This.Expiration.Date, value, () => This.Expiration = value.Add(ExpirationTime).DateTime);
+                RaisePropertyChanged("ExpirationDateTime");
             }
         }
 
         public TimeSpan ExpirationTime
         {
-            get { return _expirationTime; }
+            get { return This.Expiration.TimeOfDay; }
             set
             {
-                SetProperty(_expirationTime, value, () => _expirationTime = value);
+                SetProperty(This.Expiration.TimeOfDay, value, () => This.Expiration = ExpirationDate.Add(value).DateTime);
+                RaisePropertyChanged("ExpirationDateTime");
+            }
+        }
+
+        public DateTimeOffset ExpirationDateTime
+        {
+            get { return This.Expiration; }
+        }
+
+        public bool CanExpire
+        {
+            get
+            {
+                return RuleType == typeof(TemporaryOverrideRule);
             }
         }
 
@@ -118,6 +144,14 @@
             get
             {
                 return Rule.GetTypeById(This.Id);
+            }
+        }
+
+        public bool CanDelete
+        {
+            get
+            {
+                return RuleType != typeof(DefaultRule);
             }
         }
 
@@ -136,7 +170,7 @@
             }
         }
 
-        public async void Save()
+        public async Task Save()
         {
             ProgressViewModel progress = ProgressViewModel.Instance;
 
@@ -145,7 +179,7 @@
 
             if (IsOverride)
             {
-                var response = await ThermostatProxy.SetHoldTemp(This, ExpirationDate.DateTime.Add(ExpirationTime));
+                var response = await ThermostatProxy.SetHoldTemp(This, ExpirationDateTime.DateTime);
                 // TODO: Throw exception when it fails
             }
             else
@@ -163,9 +197,11 @@
             }
 
             progress.IsBlockingProgress = false;
+
+            RaisePropertyChanged("Rule");
         }
 
-        public async void Delete()
+        public async Task Delete()
         {
             ProgressViewModel progress = ProgressViewModel.Instance;
 
@@ -176,6 +212,8 @@
             // TODO: Throw exception when it fails
 
             progress.IsBlockingProgress = false;
+
+            RaisePropertyChanged("Deleted");
         }
     }
 }

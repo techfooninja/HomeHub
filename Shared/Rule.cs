@@ -63,18 +63,6 @@
             }
         }
 
-        public static Type GetTypeById(string id)
-        {
-            if (id == "Default")
-                return typeof(DefaultRule);
-            else if (id == "Override")
-                return typeof(TemporaryOverrideRule);
-            else if (id != null && id.StartsWith("Schedule"))
-                return typeof(ScheduleRule);
-            else
-                return typeof(Rule);
-        }
-
         [DataMember]
         public virtual TimeSpan EndTime
         {
@@ -94,6 +82,25 @@
                     _endTime = value;
                 }
             }
+        }
+
+        [DataMember]
+        public virtual DateTime Expiration
+        {
+            get;
+            set;
+        }
+
+        public static Type GetTypeById(string id)
+        {
+            if (id == "Default")
+                return typeof(DefaultRule);
+            else if (id == "Override")
+                return typeof(TemporaryOverrideRule);
+            else if (id != null && id.StartsWith("Schedule"))
+                return typeof(ScheduleRule);
+            else
+                return typeof(Rule);
         }
 
         public virtual bool IsApplicableNow()
