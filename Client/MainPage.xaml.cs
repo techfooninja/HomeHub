@@ -77,11 +77,6 @@ namespace Client
             _pollingTimer = new Timer(TimerCallback, null, 0, ClientSettings.RefreshInterval * 1000);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            // TODO: Add loading UI all over the app whenever an async web call is made
-        }
-
         private async void TimerCallback(object state)
         {
             if (String.IsNullOrEmpty(ClientSettings.Hostname))

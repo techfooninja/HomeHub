@@ -110,7 +110,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RuleProxy.cs" />
     <Compile Include="TemperatureScaleToStringConverter.cs" />
     <Compile Include="TemperatureToStringConverter.cs" />
     <Compile Include="ThermostatProxy.cs" />
