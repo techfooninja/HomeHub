@@ -117,7 +117,7 @@
     <Compile Include="TransitionInfo.cs" />
     <Compile Include="ViewModels\ClientSettingsViewModel.cs" />
     <Compile Include="ViewModels\HubSettingsViewModel.cs" />
-    <Compile Include="ViewModels\NotificationBase.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\ProgressViewModel.cs" />
     <Compile Include="ViewModels\RuleViewModel.cs" />
     <Compile Include="ViewModels\ThermostatViewModel.cs" />

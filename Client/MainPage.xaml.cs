@@ -84,18 +84,14 @@ namespace Client
                 return;
             }
 
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 Progress.NonBlockingProgressText = "Getting updates from hub...";
                 Progress.IsNonBlockingProgress = true;
-            });
 
-            Proxy = await ThermostatProxy.GetUpdates();
+                await Thermostat.GetUpdates();
 
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
                 // Update the view model
-                Thermostat.Thermostat = Proxy;
                 HubSettings.UpdateSettings(Thermostat);
                 Progress.IsNonBlockingProgress = false;
             });

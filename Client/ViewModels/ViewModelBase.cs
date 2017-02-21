@@ -7,9 +7,12 @@
     using System.Runtime.CompilerServices;
     using System.Text;
     using System.Threading.Tasks;
+    using Windows.UI.Popups;
 
-    public class NotificationBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
+        #region INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         // SetField (Name, value); // where there is a data member
@@ -40,9 +43,23 @@
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
         }
+
+        #endregion INotifyPropertyChanged
+
+        protected async Task ShowPopUp(string content, string title = null)
+        {
+            MessageDialog msg = null;
+
+            if (title == null)
+                msg = new MessageDialog(content);
+            else
+                msg = new MessageDialog(content, title);
+
+            await msg.ShowAsync();
+        }
     }
 
-    public class NotificationBase<T> : NotificationBase where T : class, new()
+    public class NotificationBase<T> : ViewModelBase where T : class, new()
     {
         protected T This;
 

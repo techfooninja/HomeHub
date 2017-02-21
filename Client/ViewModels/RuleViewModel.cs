@@ -8,6 +8,7 @@
     using HomeHub.Shared;
     using Windows.UI.Xaml.Controls;
     using System.ComponentModel;
+    using Windows.Web.Http;
 
     public class RuleViewModel : NotificationBase<Rule>
     {
@@ -177,28 +178,41 @@
             progress.BlockingProgressText = "Saving changes";
             progress.IsBlockingProgress = true;
 
-            if (IsOverride)
+            HttpResponseMessage response = null;
+
+            try
             {
-                var response = await ThermostatProxy.SetHoldTemp(This, ExpirationDateTime.DateTime);
-                // TODO: Throw exception when it fails
-            }
-            else
-            {
-                if (IsNewRule)
+                if (IsOverride)
                 {
-                    var response = await ThermostatProxy.AddRule(This);
-                    // TODO: Throw exception when it fails
+                    response = await ThermostatProxy.SetHoldTemp(This, ExpirationDateTime.DateTime);
                 }
                 else
                 {
-                    var response = await ThermostatProxy.UpdateRule(This);
-                    // TODO: Throw exception when it fails
+                    if (IsNewRule)
+                    {
+                        response = await ThermostatProxy.AddRule(This);
+                    }
+                    else
+                    {
+                        response = await ThermostatProxy.UpdateRule(This);
+                    }
                 }
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    await ShowPopUp(String.Format("{0} - {1}", response.StatusCode, response.ReasonPhrase), "Update Failed");
+                }
+
+                RaisePropertyChanged("Rule");
             }
-
-            progress.IsBlockingProgress = false;
-
-            RaisePropertyChanged("Rule");
+            catch
+            {
+                await ShowPopUp("Hub unreachable");
+            }
+            finally
+            {
+                progress.IsBlockingProgress = false;
+            }
         }
 
         public async Task Delete()
@@ -208,12 +222,25 @@
             progress.BlockingProgressText = "Deleting rule";
             progress.IsBlockingProgress = true;
 
-            var response = await ThermostatProxy.DeleteRule(This);
-            // TODO: Throw exception when it fails
+            try
+            {
+                var response = await ThermostatProxy.DeleteRule(This);
 
-            progress.IsBlockingProgress = false;
+                if (!response.IsSuccessStatusCode)
+                {
+                    await ShowPopUp(String.Format("{0} - {1}", response.StatusCode, response.ReasonPhrase), "Delete Failed");
+                }
 
-            RaisePropertyChanged("Deleted");
+                RaisePropertyChanged("Deleted");
+            }
+            catch
+            {
+                await ShowPopUp("Hub unreachable");
+            }
+            finally
+            {
+                progress.IsBlockingProgress = false;
+            }
         }
     }
 }

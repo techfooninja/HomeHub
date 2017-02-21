@@ -1,8 +1,9 @@
 ﻿namespace HomeHub.Client.ViewModels
 {
     using Shared;
+    using Windows.UI.Popups;
 
-    public class ClientSettingsViewModel : NotificationBase
+    public class ClientSettingsViewModel : ViewModelBase
     {
         private static ClientSettingsViewModel _instance = null;
 
@@ -95,11 +96,15 @@
 
             progress.IsBlockingProgress = false;
 
-            // TODO: Pop UI for change
             if (didChange)
             {
+                await ShowPopUp("Found new hub: " + Hostname);
                 RaisePropertyChanged("Hostname");
                 RaisePropertyChanged("Port");
+            }
+            else
+            {
+                await ShowPopUp("No new hub found, defaulting to " + Hostname);
             }
         }
     }

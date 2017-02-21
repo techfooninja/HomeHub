@@ -8,11 +8,13 @@
     using System.Threading.Tasks;
     using HomeHub.Shared;
     using System.ComponentModel;
+    using Windows.UI.Core;
 
     public class ThermostatViewModel : NotificationBase<ThermostatProxy>
     {
         ObservableCollection<RuleViewModel> _rules = new ObservableCollection<RuleViewModel>();
         Temperature _currentTemperature = new Temperature();
+        bool hasFailedUpdate = false;
 
         public ThermostatViewModel(ThermostatProxy proxy = null) : base(proxy)
         {
@@ -84,6 +86,23 @@
             {
                 _rules.Remove((RuleViewModel)sender);
                 RaisePropertyChanged("Rules");
+            }
+        }
+
+        public async Task GetUpdates()
+        {
+            try
+            {
+                This = await ThermostatProxy.GetUpdates();
+                hasFailedUpdate = false;
+            }
+            catch
+            {
+                if (!hasFailedUpdate)
+                {
+                    hasFailedUpdate = true;
+                    await ShowPopUp("Hub unreachable");
+                }
             }
         }
     }

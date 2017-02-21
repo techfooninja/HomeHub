@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeHub.Client.ViewModels
 {
-    public class ProgressViewModel : NotificationBase
+    public class ProgressViewModel : ViewModelBase
     {
         private static ProgressViewModel _instace = null;
 
