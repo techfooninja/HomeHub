@@ -75,6 +75,17 @@ namespace Client
             Progress = ProgressViewModel.Instance;
 
             _pollingTimer = new Timer(TimerCallback, null, 0, ClientSettings.RefreshInterval * 1000);
+
+            // Tie polling timer to client settings change
+            ClientSettings.PropertyChanged += ClientSettings_PropertyChanged;
+        }
+
+        private void ClientSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "RefreshInterval")
+            {
+                _pollingTimer.Change(0, ClientSettings.RefreshInterval * 1000);
+            }
         }
 
         private async void TimerCallback(object state)
