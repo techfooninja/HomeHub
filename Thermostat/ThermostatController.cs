@@ -33,9 +33,15 @@
         {
             Debug.WriteLine("SetPollingTime");
 
-            Thermostat.Instance.PollingTime = pollingTime;
-
-            return new PutResponse(PutResponse.ResponseStatus.OK);
+            try
+            {
+                Thermostat.Instance.PollingTime = pollingTime;
+                return new PutResponse(PutResponse.ResponseStatus.OK);
+            }
+            catch (Exception e)
+            {
+                return new PutResponse(PutResponse.ResponseStatus.NotFound, e.Message);
+            }
         }
 
         [UriFormat("/thermostat/settargetbuffertime")]
@@ -43,9 +49,15 @@
         {
             Debug.WriteLine("SetTargetBufferTime");
 
-            Thermostat.Instance.TargetBufferTime = targetBufferTime;
-
-            return new PutResponse(PutResponse.ResponseStatus.OK);
+            try
+            {
+                Thermostat.Instance.TargetBufferTime = targetBufferTime;
+                return new PutResponse(PutResponse.ResponseStatus.OK);
+            }
+            catch (Exception e)
+            {
+                return new PutResponse(PutResponse.ResponseStatus.NotFound, e.Message);
+            }
         }
 
         [UriFormat("/thermostat/setuserules")]
@@ -53,9 +65,15 @@
         {
             Debug.WriteLine("SetUseRules");
 
-            Thermostat.Instance.UseRules = useRules;
-
-            return new PutResponse(PutResponse.ResponseStatus.OK);
+            try
+            {
+                Thermostat.Instance.UseRules = useRules;
+                return new PutResponse(PutResponse.ResponseStatus.OK);
+            }
+            catch (Exception e)
+            {
+                return new PutResponse(PutResponse.ResponseStatus.NotFound, e.Message);
+            }
         }
 
         [UriFormat("/thermostat/addrule")]
@@ -63,10 +81,20 @@
         {
             Debug.WriteLine("AddRule");
 
-            Thermostat.Instance.AddRule(rule);
+            if (rule == null)
+            {
+                return new PutResponse(PutResponse.ResponseStatus.NoContent);
+            }
 
-            return new PutResponse(
-                PutResponse.ResponseStatus.OK);
+            try
+            {
+                Thermostat.Instance.AddRule(rule);
+                return new PutResponse(PutResponse.ResponseStatus.OK);
+            }
+            catch (Exception e)
+            {
+                return new PutResponse(PutResponse.ResponseStatus.NotFound, e.Message);
+            }
         }
 
         [UriFormat("/thermostat/updaterule")]
@@ -74,10 +102,15 @@
         {
             Debug.WriteLine("UpdateRule");
 
-            Thermostat.Instance.UpdateRule(rule);
-
-            return new PostResponse(
-                PostResponse.ResponseStatus.Created);
+            try
+            {
+                Thermostat.Instance.UpdateRule(rule);
+                return new PostResponse(PostResponse.ResponseStatus.Created);
+            }
+            catch (Exception e)
+            {
+                return new PostResponse(PostResponse.ResponseStatus.Conflict, e.Message);
+            }
         }
 
         [UriFormat("/thermostat/deleterule/{id}")]
@@ -85,8 +118,12 @@
         {
             Debug.WriteLine("DeleteRule");
 
-            bool status = Thermostat.Instance.DeleteRule(id);
+            if (String.IsNullOrEmpty(id))
+            {
+                return new DeleteResponse(DeleteResponse.ResponseStatus.NoContent);
+            }
 
+            bool status = Thermostat.Instance.DeleteRule(id);
             return new DeleteResponse(
                 status ? DeleteResponse.ResponseStatus.OK : DeleteResponse.ResponseStatus.NotFound);
         }
@@ -96,12 +133,21 @@
         {
             Debug.WriteLine("SetHoldTemp");
 
-            rule.Expiration = expiration;
+            if (rule == null)
+            {
+                return new PutResponse(PutResponse.ResponseStatus.NoContent);
+            }
 
-            Thermostat.Instance.UpdateRule(rule);
-
-            return new PutResponse(
-                PutResponse.ResponseStatus.OK);
+            try
+            {
+                rule.Expiration = expiration;
+                Thermostat.Instance.UpdateRule(rule);
+                return new PutResponse(PutResponse.ResponseStatus.OK);
+            }
+            catch (Exception e)
+            {
+                return new PutResponse(PutResponse.ResponseStatus.NotFound, e.Message);
+            }
         }
     }
 }
