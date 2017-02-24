@@ -19,8 +19,8 @@
     </Page.Resources>
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">        
-        <Pivot Margin="0,20,0,0">
-            <PivotItem>
+        <Pivot x:Name="MainPivot" Margin="0,20,0,0">
+            <PivotItem x:Name="HomePivot">
                 <PivotItem.Header>
                     <SymbolIcon Symbol="Home" />
                 </PivotItem.Header>
@@ -32,7 +32,7 @@
                     <Button Content="Override" Tapped="OverrideButton_Tapped" />
                 </StackPanel>
             </PivotItem>
-            <PivotItem>
+            <PivotItem x:Name="RulesPivot">
                 <PivotItem.Header>
                     <SymbolIcon Symbol="AllApps" />
                 </PivotItem.Header>
@@ -78,7 +78,7 @@
                     </ListView>
                 </StackPanel>
             </PivotItem>
-            <PivotItem>
+            <PivotItem x:Name="DevicesPivot">
                 <PivotItem.Header>
                     <SymbolIcon Symbol="AttachCamera" />
                 </PivotItem.Header>
@@ -87,7 +87,7 @@
                     <Button Content="StartNonBlockingProgress" Tapped="StartNonBlockingProgress_Tapped" />
                 </StackPanel>
             </PivotItem>
-            <PivotItem>
+            <PivotItem x:Name="SettingsPivot">
                 <PivotItem.Header>
                     <SymbolIcon Symbol="Setting" />
                 </PivotItem.Header>
@@ -131,7 +131,7 @@
                             <TextBlock Grid.Column="0" Grid.Row="2" Margin="10" Text="Refresh Interval:" />
                             <TextBox Grid.Column="1" Grid.Row="2" Margin="10" Text="{Binding RefreshInterval, Mode=TwoWay}" />
                             <TextBlock Grid.Column="0" Grid.Row="3" Margin="10" Text="Hostname: " />
-                            <TextBox Grid.Column="1" Grid.Row="3" Margin="10" Text="{Binding Hostname, Mode=TwoWay}" />
+                            <TextBox Grid.Column="1" Grid.Row="3" Margin="10" Text="{Binding Hostname, Mode=TwoWay}" x:Name="HostNameTextBox" />
                             <TextBlock Grid.Column="0" Grid.Row="4" Margin="10" Text="Port: " />
                             <TextBox Grid.Column="1" Grid.Row="4" Margin="10" Text="{Binding Port, Mode=TwoWay}" InputScope="Number" />
                             <Button Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Center" Content="Search for Hub" Tapped="{x:Bind ClientSettings.ProbeForHub}" />

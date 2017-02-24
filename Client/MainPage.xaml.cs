@@ -24,6 +24,8 @@ using System.Runtime.CompilerServices;
 using HomeHub.Client.ViewModels;
 using System.Threading;
 using Windows.UI.Core;
+using Windows.UI.Popups;
+using Windows.System.Profile;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -34,6 +36,8 @@ namespace Client
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private bool _didPromptForScan = false;
+
         public ThermostatProxy Proxy
         {
             get;
@@ -92,6 +96,50 @@ namespace Client
         {
             if (String.IsNullOrEmpty(ClientSettings.Hostname))
             {
+                if (!_didPromptForScan)
+                {
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                    {
+                        _didPromptForScan = true;
+                        var msg = new MessageDialog("Would you like to search for a hub or do you know your hub's hostname?", "Welcome!");
+                        msg.Commands.Add(new UICommand() { Id = "search", Label = "Search for hub" });
+                        msg.Commands.Add(new UICommand() { Id = "hostname", Label = "I know the hostname" });
+                        msg.DefaultCommandIndex = 0;
+
+                        // TODO: Revisit if MessageDialog API is updated in future release
+                        var deviceFamily = AnalyticsInfo.VersionInfo.DeviceFamily;
+                        if (deviceFamily.Contains("Desktop"))
+                        {
+                            msg.Commands.Add(new UICommand() { Id = "cancel", Label = "Cancel" });
+                            msg.CancelCommandIndex = 2;
+                        }
+                        // Maybe Xbox 'B' button works, but I don't know so best to not do anything
+                        else if (!deviceFamily.Contains("Mobile"))
+                        {
+                            throw new Exception("Don't know how to show dialog for device "
+                              + deviceFamily);
+                        }
+
+                        var result = await msg.ShowAsync();
+
+                        if (result == null || (string)result.Id == "cancel")
+                        {
+                            Debug.WriteLine("Cancel Pressed");
+                        }
+                        else if ((string)result.Id == "search")
+                        {
+                            Debug.WriteLine("Search Pressed");
+                            MainPivot.SelectedItem = SettingsPivot;
+                            ClientSettings.ProbeForHub();
+                        }
+                        else if ((string)result.Id == "hostname")
+                        {
+                            Debug.WriteLine("Hostname Pressed");
+                            MainPivot.SelectedItem = SettingsPivot;
+                        }
+                    });
+                }
+
                 return;
             }
 

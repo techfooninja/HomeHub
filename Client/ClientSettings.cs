@@ -78,6 +78,7 @@
 
         public static async Task<bool> ProbeForHub()
         {
+            // TODO: Do this on a worker thread?
             int maxSubnet = 255;
             int port = Port;
             bool changed = false;
