@@ -9,6 +9,8 @@
     using System.Threading;
     using System.Threading.Tasks;
     using HomeHub.Shared;
+    using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     [DataContract]
     class Thermostat : IThermostat
@@ -22,6 +24,8 @@
         private TemperatureState _previousTempState;
         private TimeSpan _targetBufferTime;
 
+        // TODO: Left off here, need to serialize/deserialize rules and devices
+
         private Thermostat()
         {
             _devices = new List<IDevice>();
@@ -29,20 +33,12 @@
             // Add Hub Device, which should always be present since it represents this device
             _devices.Add(new HubDevice());
 
-            // TODO: Add other devices here
+            // TODO: Add support for saving and reading Devices
 
-            _rules = new List<Rule>();
-
-            // Add Default Rule, which should always be there
-            _rules.Add(new DefaultRule());
-
-            // TODO: Add other rules here
+            _rules = ReadRules();
 
             // Configure default state to be target. Sensors will need to be polled to take any action
             _previousTempState = TemperatureState.Target;
-
-            // Configure target buffer time, default to 2 minutes
-            TargetBufferTime = 120;
 
             // Set up timer
             _pollingTimer = new Timer(TimerCallback, null, 0, PollingTime * 1000);
@@ -125,26 +121,48 @@
         [DataMember]
         public IEnumerable<TemperatureReading> CurrentTemperatures { get; private set; }
 
+        private List<Rule> ReadRules()
+        {
+            // Add Default Rule, which should always be there
+            var newRules = new List<Rule>();
+            newRules.Add(new DefaultRule());
+            return SettingsHelper.GetProperty<List<Rule>>(newRules, true, "Rules");
+        }
+
+        private void SaveRules()
+        {
+            SettingsHelper.SetProperty(_rules, true, "Rules");
+        }
+
         public void AddRule(Rule newRule)
         {
             _rules.Add(newRule);
+            SaveRules();
         }
 
         public bool DeleteRule(string id)
         {
-            return _rules.RemoveAll(r => r.Id == id) > 0;
+            var success = _rules.RemoveAll(r => r.Id == id) > 0;
+            SaveRules();
+            return success;
         }
 
         public void UpdateRule(Rule rule)
         {
             DeleteRule(rule.Id);
             AddRule(rule);
+            SaveRules();
+        }
+
+        private void RemoveStaleRules()
+        {
+            _rules.RemoveAll(r => r is TemporaryOverrideRule ? ((TemporaryOverrideRule)r).Expiration < DateTime.Now : false);
+            SaveRules();
         }
 
         private async void TimerCallback(object state)
         {
-            // Clean out old rules
-            _rules.RemoveAll(r => r is TemporaryOverrideRule ? ((TemporaryOverrideRule)r).Expiration < DateTime.Now : false);
+            RemoveStaleRules();
 
             List<Task<IEnumerable<ISensorReading>>> tasks = new List<Task<IEnumerable<ISensorReading>>>();
             List<ISensorReading> readings = new List<ISensorReading>();
