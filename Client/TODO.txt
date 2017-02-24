@@ -1,0 +1,23 @@
+﻿Client
+- Show Enable status on rules pivot
+- Move settings to it's own page, accessible through AppBar
+- Add push notifications (change filter, problem occurs, heater on for > 1hr at a time with little temperature change)
+- Download hub configuration to a file
+- Upload hub configuration from a file
+- Enable geolocation (for motion settings)
+- Auto-updating
+- Does pivot layout make sense?
+- SSL? HTTPS?
+
+Hub
+- Add thermometer functionality
+- Add control functionality for heater and fan
+- Add motion functionality
+- Check logic for Target Buffer Time
+- Export configuration to client
+- Import configuration from client
+- Add multiple sensors
+- Add push notification functionality
+- Add data storage (i.e. save temperatures to SQL/Azure DB)
+- Auto-updating
+- SSL? HTTPS?
