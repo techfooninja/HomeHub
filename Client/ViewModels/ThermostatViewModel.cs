@@ -93,7 +93,7 @@
         {
             try
             {
-                This = await ThermostatProxy.GetUpdates();
+                Thermostat = await ThermostatProxy.GetUpdates();
                 hasFailedUpdate = false;
             }
             catch
