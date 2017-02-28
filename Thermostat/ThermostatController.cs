@@ -14,11 +14,6 @@
     [RestController(InstanceCreationType.Singleton)]
     class ThermostatController
     {
-        // TODO: Functionality
-        //  Current Temperature
-        //  Set Temperature
-        //  Support rules and hold temperature
-
         [UriFormat("/thermostat")]
         public IGetResponse GetStatus()
         {
@@ -26,6 +21,30 @@
             return new GetResponse(
               GetResponse.ResponseStatus.OK,
               Thermostat.Instance);
+        }
+
+        [UriFormat("/thermostat/export")]
+        public IGetResponse ExportThermostat()
+        {
+            Debug.WriteLine("ExportThermostat");
+            return new GetResponse(
+                GetResponse.ResponseStatus.OK,
+                Thermostat.Instance.Export());
+        }
+
+        [UriFormat("/thermostat/import")]
+        public IPutResponse ImportThermostat([FromContent]ThermostatState state)
+        {
+            Debug.WriteLine("ImportThermostat");
+            try
+            {
+                Thermostat.Instance.Import(state);
+                return new PutResponse(PutResponse.ResponseStatus.OK);
+            }
+            catch (Exception e)
+            {
+                return new PutResponse(PutResponse.ResponseStatus.NotFound, e.Message);
+            }
         }
 
         [UriFormat("/thermostat/setpollingtime")]

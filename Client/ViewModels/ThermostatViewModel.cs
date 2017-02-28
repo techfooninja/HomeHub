@@ -13,7 +13,6 @@
     public class ThermostatViewModel : NotificationBase<ThermostatProxy>
     {
         ObservableCollection<RuleViewModel> _rules = new ObservableCollection<RuleViewModel>();
-        Temperature _currentTemperature = new Temperature();
         bool hasFailedUpdate = false;
 
         public ThermostatViewModel(ThermostatProxy proxy = null) : base(proxy)
@@ -44,11 +43,21 @@
             }
         }
 
+        public bool IsAvailable
+        {
+            get
+            {
+                return !hasFailedUpdate;
+            }
+        }
+
         public Temperature CurrentTemperature
         {
             get
             {
-                return (This.CurrentAverageTemperature ?? new Temperature()).ConvertToScale(ClientSettings.TemperatureFormat);
+                return This.CurrentAverageTemperature != null
+                    ? This.CurrentAverageTemperature.ConvertToScale(ClientSettings.TemperatureFormat)
+                    : null;
             }
         }
 
@@ -104,6 +113,8 @@
                     await ShowPopUp("Hub unreachable");
                 }
             }
+
+            RaisePropertyChanged("IsAvailable");
         }
     }
 }

@@ -24,8 +24,6 @@
         private TemperatureState _previousTempState;
         private TimeSpan _targetBufferTime;
 
-        // TODO: Left off here, need to serialize/deserialize rules and devices
-
         private Thermostat()
         {
             _devices = new List<IDevice>();
@@ -158,6 +156,25 @@
         {
             _rules.RemoveAll(r => r is TemporaryOverrideRule ? ((TemporaryOverrideRule)r).Expiration < DateTime.Now : false);
             SaveRules();
+        }
+
+        public void Import(ThermostatState state)
+        {
+            _rules = state.Rules;
+            PollingTime = state.PollingTime;
+            TargetBufferTime = state.TargetBufferTime;
+            UseRules = state.UseRules;
+        }
+
+        public ThermostatState Export()
+        {
+            return new ThermostatState()
+            {
+                Rules = this._rules,
+                PollingTime = this.PollingTime,
+                TargetBufferTime = this.TargetBufferTime,
+                UseRules = this.UseRules
+            };
         }
 
         private async void TimerCallback(object state)
