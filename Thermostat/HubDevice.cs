@@ -117,8 +117,7 @@
             Task<IEnumerable<ISensorReading>> newTask = Task.Run<IEnumerable<ISensorReading>>(() =>
             {
                 List<ISensorReading> readings = new List<ISensorReading>();
-
-                // TODO: Create temperature and motion readings
+                
                 readings.Add(new TemperatureReading(Id, ReadThermometer()));
                 readings.Add(new MotionReading(Id, ReadMotionSensor()));
 
@@ -142,13 +141,11 @@
 
         private void ActivateFurnace(bool shouldActivate)
         {
-            // TODO: Activate or deactivate furnace
             _supportedCommandFunctions[DeviceFunction.Heat] = true;
         }
 
         private void ActivateFan(bool shouldActivate)
         {
-            // TODO: Activate or deactivate fan
             _supportedCommandFunctions[DeviceFunction.Fan] = true;
         }
     }
