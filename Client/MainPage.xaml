@@ -15,6 +15,7 @@
             <local:TemperatureToStringConverter x:Key="TemperatureConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeConverter" />
             <local:DateTimeToStringConverter x:Key="DateConverter" />
+            <local:BooleanToFontWeightConverter x:Key="FontWeightConverter" />
         </ResourceDictionary>
     </Page.Resources>
     
@@ -38,7 +39,7 @@
                 </PivotItem.Header>
                 <StackPanel>
                     <TextBlock Margin="10" Text="Rules" FontSize="30" />
-                    <AppBarButton Icon="Add" Content="Add Rule" Margin="5" x:Name="AddRuleButton" Tapped="AddRuleButton_Tapped" />
+                    <AppBarButton Icon="Add" Content="Add Rule" Margin="5" x:Name="AddRuleButton" Tapped="AddRuleButton_Tapped" IsEnabled="{x:Bind Thermostat.IsAvailable, Mode=OneWay}" />
                     <ListView x:Name="RuleListView" ItemsSource="{x:Bind Thermostat.Rules, Mode=TwoWay}" IsItemClickEnabled="True" ItemClick="RuleListView_ItemClick" SelectionMode="None" >
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="localVM:RuleViewModel">
@@ -53,23 +54,23 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind StartTime, Mode=OneWay, Converter={StaticResource TimeConverter}}" Visibility="{x:Bind HasTimes, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" />
+                                    <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind StartTime, Mode=OneWay, Converter={StaticResource TimeConverter}}" Visibility="{x:Bind HasTimes, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                     <SymbolIcon Margin="10" Grid.Column="0" Grid.RowSpan="3" Symbol="{x:Bind RuleSymbol, Mode=OneWay}" />
                                     <TextBlock Margin="20,10,20,10" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center">
-                                        <Run Text="{x:Bind LowTemperature, Mode=OneWay, Converter={StaticResource TemperatureConverter}}" />
-                                        <Run Text="{x:Bind CurrentTemperatureUnit, Mode=OneWay}" />
+                                        <Run Text="{x:Bind LowTemperature, Mode=OneWay, Converter={StaticResource TemperatureConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
+                                        <Run Text="{x:Bind CurrentTemperatureUnit, Mode=OneWay}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                         <Run Text="  -  " />
-                                        <Run Text="{x:Bind HighTemperature, Mode=OneWay, Converter={StaticResource TemperatureConverter}}" />
-                                        <Run Text="{x:Bind CurrentTemperatureUnit, Mode=OneWay}" />
+                                        <Run Text="{x:Bind HighTemperature, Mode=OneWay, Converter={StaticResource TemperatureConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
+                                        <Run Text="{x:Bind CurrentTemperatureUnit, Mode=OneWay}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                     </TextBlock>
                                     <Button Margin="10" Grid.Column="2" Grid.RowSpan="3" Tapped="{x:Bind Delete}" Visibility="{x:Bind CanDelete, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
                                         <SymbolIcon Symbol="Delete"/>
                                     </Button>
-                                    <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind EndTime, Mode=OneWay, Converter={StaticResource TimeConverter}}" Visibility="{x:Bind HasTimes, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" />
+                                    <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind EndTime, Mode=OneWay, Converter={StaticResource TimeConverter}}" Visibility="{x:Bind HasTimes, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                     <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind CanExpire, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
                                         <TextBlock>
                                             <Run Text="Until " />
-                                            <Run Text="{x:Bind ExpirationDateTime, Mode=OneWay, Converter={StaticResource DateConverter}}" />
+                                            <Run Text="{x:Bind ExpirationDateTime, Mode=OneWay, Converter={StaticResource DateConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                         </TextBlock>
                                     </StackPanel>
                                 </Grid>

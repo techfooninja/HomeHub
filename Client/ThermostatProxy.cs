@@ -47,6 +47,13 @@
         }
 
         [DataMember]
+        public string CurrentRuleId
+        {
+            get;
+            protected set;
+        }
+
+        [DataMember]
         public int TargetBufferTime
         {
             get;

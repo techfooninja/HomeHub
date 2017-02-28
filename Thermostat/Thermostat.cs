@@ -110,6 +110,13 @@
         }
 
         [DataMember]
+        public string CurrentRuleId
+        {
+            get;
+            private set;
+        }
+
+        [DataMember]
         public Temperature CurrentAverageTemperature { get; private set; }
 
         [DataMember]
@@ -197,7 +204,9 @@
             CurrentAverageTemperature = Temperature.Average(CurrentTemperatures.Select(tr => tr.Temperature));
 
             // Get Temperature State from the current rule set
-            TemperatureState currentTempState = Rules.First(r => r.IsApplicableNow()).ProcessReadings(readings);
+            Rule currentRule = Rules.First(r => r.IsApplicableNow());
+            CurrentRuleId = currentRule.Id;
+            TemperatureState currentTempState = currentRule.ProcessReadings(readings);
 
             // Handle temperature state
             await HandleTemperatureState(currentTempState);

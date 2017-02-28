@@ -76,6 +76,12 @@
             {
                 var rvm = new RuleViewModel(rule);
                 rvm.PropertyChanged += Rule_PropertyChanged;
+
+                if (rule.Id == This.CurrentRuleId)
+                {
+                    rvm.IsCurrent = true;
+                }
+
                 _rules.Add(rvm);
             }
 

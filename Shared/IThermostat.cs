@@ -9,6 +9,7 @@
         bool UseRules { get; }
         IEnumerable<IDevice> Devices { get; }
         IEnumerable<Rule> Rules { get; }
+        string CurrentRuleId { get; }
         Temperature CurrentAverageTemperature { get; }
         IEnumerable<TemperatureReading> CurrentTemperatures { get; }
     }

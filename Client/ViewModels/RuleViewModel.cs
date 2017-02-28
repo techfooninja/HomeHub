@@ -11,6 +11,7 @@
     {
         private bool _isNewRule;
         private bool _isOverride;
+        private bool _isCurrent;
 
         public RuleViewModel(Rule rule = null) : base(rule)
         {
@@ -57,6 +58,15 @@
             set
             {
                 SetProperty(This.IsEnabled, value, () => This.IsEnabled = value);
+            }
+        }
+
+        public bool IsCurrent
+        {
+            get { return _isCurrent; }
+            set
+            {
+                SetProperty(ref _isCurrent, value);
             }
         }
 
