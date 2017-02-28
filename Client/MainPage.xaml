@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:HomeHub.Client"
     xmlns:localVM="using:HomeHub.Client.ViewModels"
+    xmlns:localConverters="using:HomeHub.Client.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -11,11 +12,11 @@
     
     <Page.Resources>
         <ResourceDictionary>
-            <local:VisibilityConverter x:Key="VisibilityConverter" />
-            <local:TemperatureToStringConverter x:Key="TemperatureConverter" />
-            <local:TimeSpanToStringConverter x:Key="TimeConverter" />
-            <local:DateTimeToStringConverter x:Key="DateConverter" />
-            <local:BooleanToFontWeightConverter x:Key="FontWeightConverter" />
+            <localConverters:VisibilityConverter x:Key="VisibilityConverter" />
+            <localConverters:TemperatureToStringConverter x:Key="TemperatureConverter" />
+            <localConverters:TimeSpanToStringConverter x:Key="TimeConverter" />
+            <localConverters:DateTimeToStringConverter x:Key="DateConverter" />
+            <localConverters:BooleanToFontWeightConverter x:Key="FontWeightConverter" />
         </ResourceDictionary>
     </Page.Resources>
     

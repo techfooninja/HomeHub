@@ -95,10 +95,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BooleanToFontWeightConverter.cs" />
+    <Compile Include="Converters\BooleanToFontWeightConverter.cs" />
     <Compile Include="ClientSettings.cs" />
     <Compile Include="ClientJsonConverter.cs" />
-    <Compile Include="DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="DeviceProxy.cs" />
     <Compile Include="HubSettings.cs" />
     <Compile Include="ProgressView.xaml.cs">
@@ -111,10 +111,10 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemperatureScaleToStringConverter.cs" />
-    <Compile Include="TemperatureToStringConverter.cs" />
+    <Compile Include="Converters\TemperatureScaleToStringConverter.cs" />
+    <Compile Include="Converters\TemperatureToStringConverter.cs" />
     <Compile Include="ThermostatProxy.cs" />
-    <Compile Include="TimeSpanToStringConverter.cs" />
+    <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="TransitionInfo.cs" />
     <Compile Include="ViewModels\ClientSettingsViewModel.cs" />
     <Compile Include="ViewModels\HubSettingsViewModel.cs" />
@@ -122,7 +122,7 @@
     <Compile Include="ViewModels\ProgressViewModel.cs" />
     <Compile Include="ViewModels\RuleViewModel.cs" />
     <Compile Include="ViewModels\ThermostatViewModel.cs" />
-    <Compile Include="VisibilityConverter.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

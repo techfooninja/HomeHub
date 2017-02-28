@@ -1,4 +1,4 @@
-﻿namespace HomeHub.Client
+﻿namespace HomeHub.Client.Converters
 {
     using System;
     using Windows.UI.Xaml;

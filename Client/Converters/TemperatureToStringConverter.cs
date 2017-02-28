@@ -1,4 +1,4 @@
-﻿namespace HomeHub.Client
+﻿namespace HomeHub.Client.Converters
 {
     using HomeHub.Shared;
     using System;
