@@ -1,5 +1,4 @@
 ﻿Client
-- Show Enable status on rules pivot
 - Move settings to it's own page, accessible through AppBar
 - Add push notifications (change filter, problem occurs, heater on for > 1hr at a time with little temperature change)
 - Enable geolocation (for motion settings)

@@ -163,18 +163,11 @@
             }
         }
 
-        public Symbol RuleSymbol
+        public bool CanDisable
         {
             get
             {
-                if (RuleType == typeof(DefaultRule))
-                    return Symbol.Pin;
-                else if (RuleType == typeof(TemporaryOverrideRule))
-                    return Symbol.ReportHacked;
-                else if (RuleType == typeof(ScheduleRule))
-                    return Symbol.Clock;
-                else
-                    return Symbol.Placeholder;
+                return RuleType != typeof(DefaultRule);
             }
         }
 
@@ -220,6 +213,12 @@
             {
                 progress.IsBlockingProgress = false;
             }
+        }
+
+        public async Task ToggleIsEnabled()
+        {
+            IsEnabled = !IsEnabled;
+            await Save();
         }
 
         public async Task Delete()

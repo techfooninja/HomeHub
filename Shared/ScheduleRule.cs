@@ -56,7 +56,7 @@
             if (StartTime < EndTime)
             {
                 // Doesn't cross midnight threshold
-                if (now >= StartTime && now < EndTime)
+                if (now >= StartTime && now < EndTime && IsEnabled)
                 {
                     return true;
                 }
@@ -66,7 +66,7 @@
             else
             {
                 // Does cross midnight threshold
-                if (now < StartTime || now >= EndTime)
+                if ((now < StartTime || now >= EndTime) && IsEnabled)
                 {
                     return true;
                 }
@@ -80,7 +80,8 @@
             Temperature average =
                 Temperature.Average(
                     readings.OfType<TemperatureReading>()
-                    .Where((tr) => ApplicableDevices.Where(d => d.Id == tr.DeviceId).Count() > 0)
+                    // TODO: Add ApplicableDevices logic
+                    //.Where((tr) => ApplicableDevices.Where(d => d.Id == tr.DeviceId).Count() > 0)
                     .Select((tr) => tr.Temperature)
                     .AsEnumerable()
                 );

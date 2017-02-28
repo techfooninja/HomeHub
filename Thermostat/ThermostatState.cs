@@ -5,7 +5,7 @@
     using System.Runtime.Serialization;
 
     [DataContract]
-    public class ThermostatState
+    class ThermostatState
     {
         [DataMember]
         public List<Rule> Rules;
