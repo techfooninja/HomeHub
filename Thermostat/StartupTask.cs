@@ -2,19 +2,9 @@
 
 namespace HomeHub.Hub
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Net.Http;
-    using Windows.ApplicationModel.Background;
-    using Restup.Webserver.Rest;
     using Restup.Webserver.Http;
-    using Restup.Webserver.File;
-    using Restup.Webserver.Attributes;
-    using Restup.Webserver.Models.Schemas;
-    using Restup.Webserver.Models.Contracts;
-    using HomeHub.Shared;
+    using Restup.Webserver.Rest;
+    using Windows.ApplicationModel.Background;
 
     public sealed class StartupTask : IBackgroundTask
     {

@@ -1,36 +1,22 @@
-﻿using HomeHub.Client;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Runtime.Serialization.Json;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using HomeHub.Shared;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using HomeHub.Client.ViewModels;
-using System.Threading;
-using Windows.UI.Core;
-using Windows.UI.Popups;
-using Windows.System.Profile;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+﻿// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace Client
 {
+    using HomeHub.Client;
+    using HomeHub.Client.ViewModels;
+    using HomeHub.Shared;
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Windows.System.Profile;
+    using Windows.UI.Core;
+    using Windows.UI.Popups;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>

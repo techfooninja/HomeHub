@@ -1,16 +1,12 @@
 ﻿namespace HomeHub.Hub
 {
+    using HomeHub.Shared;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using HomeHub.Shared;
-    using System.Xml.Serialization;
-    using Newtonsoft.Json;
 
     [DataContract]
     class Thermostat : IThermostat

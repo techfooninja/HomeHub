@@ -1,15 +1,11 @@
 ﻿namespace HomeHub.Hub
 {
+    using HomeHub.Shared;
     using Restup.Webserver.Attributes;
     using Restup.Webserver.Models.Contracts;
     using Restup.Webserver.Models.Schemas;
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using HomeHub.Shared;
 
     [RestController(InstanceCreationType.Singleton)]
     class ThermostatController

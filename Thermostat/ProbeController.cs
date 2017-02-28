@@ -5,14 +5,8 @@
     using Restup.Webserver.Models.Schemas;
     using Shared;
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Windows.ApplicationModel;
-    using Windows.Networking;
-    using Windows.Networking.Connectivity;
 
     [RestController(InstanceCreationType.Singleton)]
     class ProbeController

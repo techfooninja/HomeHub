@@ -1,7 +1,6 @@
 ﻿namespace HomeHub.Client.ViewModels
 {
     using Shared;
-    using Windows.UI.Popups;
 
     public class ClientSettingsViewModel : ViewModelBase
     {

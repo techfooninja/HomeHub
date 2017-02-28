@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Windows.Foundation;
 
     public interface IDevice
     {

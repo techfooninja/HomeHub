@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HomeHub.Client.ViewModels
+﻿namespace HomeHub.Client.ViewModels
 {
+    using System;
+
     public class ProgressViewModel : ViewModelBase
     {
         private static ProgressViewModel _instace = null;

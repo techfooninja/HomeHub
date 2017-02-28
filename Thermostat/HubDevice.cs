@@ -1,14 +1,10 @@
 ﻿namespace HomeHub.Hub
 {
+    using HomeHub.Shared;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Runtime.Serialization;
-    using System.Text;
     using System.Threading.Tasks;
-    using Windows.Devices.Gpio;
-    using Windows.Foundation;
-    using HomeHub.Shared;
 
     [DataContract]
     class HubDevice : IDevice

@@ -1,7 +1,7 @@
 ﻿namespace HomeHub.Client
 {
-    using System;
     using HomeHub.Shared;
+    using System;
     using System.Threading.Tasks;
     using Windows.Storage;
 

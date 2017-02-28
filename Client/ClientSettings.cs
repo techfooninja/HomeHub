@@ -1,18 +1,10 @@
 ﻿namespace HomeHub.Client
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using HomeHub.Shared;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-    using Windows.Storage;
-    using Windows.Networking.Connectivity;
-    using Windows.Web.Http;
+    using System;
     using System.Diagnostics;
-    using System.Net;
+    using System.Threading.Tasks;
+    using Windows.Storage;
 
     public static class ClientSettings
     {

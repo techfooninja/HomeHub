@@ -1,13 +1,10 @@
 ﻿namespace HomeHub.Client.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using HomeHub.Shared;
-    using Windows.UI.Xaml.Controls;
+    using System;
     using System.ComponentModel;
+    using System.Threading.Tasks;
+    using Windows.UI.Xaml.Controls;
     using Windows.Web.Http;
 
     public class RuleViewModel : NotificationBase<Rule>

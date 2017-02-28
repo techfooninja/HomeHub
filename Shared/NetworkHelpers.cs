@@ -1,15 +1,11 @@
 ﻿namespace HomeHub.Shared
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
-    using System.Text;
     using System.Threading.Tasks;
-    using Windows.Networking;
     using Windows.Networking.Connectivity;
-    using Windows.Networking.Sockets;
     using Windows.Web.Http;
     using Windows.Web.Http.Filters;
 

@@ -1,15 +1,13 @@
 ﻿namespace HomeHub.Client
 {
+    using HomeHub.Shared;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using HomeHub.Shared;
     using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Threading.Tasks;
     using Windows.Web.Http;
-    
+
     [DataContract]
     public class ThermostatProxy : IThermostat
     {

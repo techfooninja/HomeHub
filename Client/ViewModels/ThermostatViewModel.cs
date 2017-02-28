@@ -1,14 +1,10 @@
 ﻿namespace HomeHub.Client.ViewModels
 {
-    using System;
+    using HomeHub.Shared;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using HomeHub.Shared;
     using System.ComponentModel;
-    using Windows.UI.Core;
+    using System.Threading.Tasks;
 
     public class ThermostatViewModel : NotificationBase<ThermostatProxy>
     {
