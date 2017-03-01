@@ -193,6 +193,7 @@
 
         private async void TimerCallback(object state)
         {
+            // TODO: Enable Azure IOT Hub Data
             RemoveStaleRules();
 
             List<Task<IEnumerable<ISensorReading>>> tasks = new List<Task<IEnumerable<ISensorReading>>>();
