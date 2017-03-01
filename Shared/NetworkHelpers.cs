@@ -27,14 +27,20 @@
             var icp = NetworkInformation.GetInternetConnectionProfile();
 
             if (icp?.NetworkAdapter == null) return null;
-            var hostname =
-                NetworkInformation.GetHostNames()
-                    .SingleOrDefault(
-                        hn =>
-                            hn.IPInformation?.NetworkAdapter != null && hn.IPInformation.NetworkAdapter.NetworkAdapterId
-                            == icp.NetworkAdapter.NetworkAdapterId);
 
-            return hostname?.CanonicalName;
+            if (icp.IsWlanConnectionProfile)
+            {
+                var hostname =
+                    NetworkInformation.GetHostNames()
+                        .SingleOrDefault(
+                            hn =>
+                                hn.IPInformation?.NetworkAdapter != null && hn.IPInformation.NetworkAdapter.NetworkAdapterId
+                                == icp.NetworkAdapter.NetworkAdapterId);
+
+                return hostname?.CanonicalName;
+            }
+
+            return null;
         }
 
         public static string GetLocalDomainName()
