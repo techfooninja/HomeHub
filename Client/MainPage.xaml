@@ -76,7 +76,7 @@
                                     <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind EndTime, Mode=OneWay, Converter={StaticResource TimeConverter}}" Visibility="{x:Bind HasTimes, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                     <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind CanExpire, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
                                         <TextBlock>
-                                            <Run Text="Until " />
+                                            <Run Text="Until " FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                             <Run Text="{x:Bind ExpirationDateTime, Mode=OneWay, Converter={StaticResource DateConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                         </TextBlock>
                                     </StackPanel>

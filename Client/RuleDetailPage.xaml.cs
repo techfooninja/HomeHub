@@ -71,6 +71,11 @@ namespace HomeHub.Client
         {
             Debug.WriteLine("Apply Button Pressed");
             await Rule.Save();
+
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
         }
 
         private void CancelButton_Tapped(object sender, TappedRoutedEventArgs e)

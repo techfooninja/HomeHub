@@ -16,6 +16,7 @@ namespace Client
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Input;
+    using Windows.UI.Xaml.Navigation;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -68,6 +69,11 @@ namespace Client
 
             // Tie polling timer to client settings change
             ClientSettings.PropertyChanged += ClientSettings_PropertyChanged;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            TimerCallback(null);
         }
 
         private void ClientSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
