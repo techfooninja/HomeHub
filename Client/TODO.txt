@@ -5,6 +5,8 @@
 - Auto-updating
 - Does pivot layout make sense?
 - SSL? HTTPS?
+- Add support for current temperature at hub location
+- Show forecast for the next 12-24 hours
 
 Hub
 - Add thermometer functionality
@@ -16,3 +18,7 @@ Hub
 - Add data storage (i.e. save temperatures to SQL/Azure DB)
 - Auto-updating
 - SSL? HTTPS?
+- Add support for current temperature at hub location
+- Show forecast for the next 12-24 hours
+- Adjust thermostat actions based on forecast
+- Amazon Dash Buttons?
