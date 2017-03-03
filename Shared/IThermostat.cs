@@ -7,7 +7,7 @@
         int PollingTime { get; }
         int TargetBufferTime { get; }
         bool UseRules { get; }
-        IEnumerable<IDevice> Devices { get; }
+        IEnumerable<Device> Devices { get; }
         IEnumerable<Rule> Rules { get; }
         string CurrentRuleId { get; }
         Temperature CurrentAverageTemperature { get; }

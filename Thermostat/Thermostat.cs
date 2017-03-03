@@ -15,20 +15,14 @@
         private static RuleComparer _ruleComparer = new RuleComparer();
 
         private Timer _pollingTimer;
-        private List<IDevice> _devices;
+        private List<Device> _devices;
         private List<Rule> _rules;
         private TemperatureState _previousTempState;
         private TimeSpan _targetBufferTime;
 
         private Thermostat()
         {
-            _devices = new List<IDevice>();
-
-            // Add Hub Device, which should always be present since it represents this device
-            _devices.Add(new HubDevice());
-
-            // TODO: Add support for saving and reading Devices
-
+            _devices = ReadDevices();
             _rules = ReadRules();
 
             // Configure default state to be target. Sensors will need to be polled to take any action
@@ -92,7 +86,7 @@
         }
 
         [DataMember]
-        public IEnumerable<IDevice> Devices
+        public IEnumerable<Device> Devices
         {
             get { return _devices; }
         }
@@ -144,6 +138,19 @@
         private void SaveRules()
         {
             SettingsHelper.SetProperty(_rules, true, "Rules");
+        }
+
+        private List<Device> ReadDevices()
+        {
+            // Add Hub Device, which should always be there
+            var newDevices = new List<Device>();
+            newDevices.Add(new HubDevice());
+            return SettingsHelper.GetProperty<List<Device>>(newDevices, true, "Devices");
+        }
+
+        private void SaveDevices()
+        {
+            SettingsHelper.SetProperty(_devices, true, "Devices");
         }
 
         public void AddRule(Rule newRule)

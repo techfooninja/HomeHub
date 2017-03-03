@@ -8,8 +8,7 @@
     {
         public override bool CanConvert(Type objectType)
         {
-            if (objectType == typeof(IThermostat) ||
-                objectType == typeof(IDevice))
+            if (objectType == typeof(IThermostat))
             {
                 return true;
             }
@@ -21,8 +20,6 @@
         {
             if (objectType == typeof(IThermostat))
                 return serializer.Deserialize(reader, typeof(ThermostatProxy));
-            else if (objectType == typeof(IDevice))
-                return serializer.Deserialize(reader, typeof(DeviceProxy));
 
             throw new NotSupportedException(string.Format("Type {0} unexpected.", objectType));
         }

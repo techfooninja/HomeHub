@@ -26,7 +26,7 @@
         }
 
         [DataMember]
-        public IEnumerable<IDevice> Devices
+        public IEnumerable<Device> Devices
         {
             get;
             protected set;

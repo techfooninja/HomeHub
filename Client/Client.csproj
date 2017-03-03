@@ -101,7 +101,6 @@
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\PlayPauseSymbolConverter.cs" />
     <Compile Include="Converters\RuleTypeSymbolConverter.cs" />
-    <Compile Include="DeviceProxy.cs" />
     <Compile Include="HubSettings.cs" />
     <Compile Include="ProgressView.xaml.cs">
       <DependentUpon>ProgressView.xaml</DependentUpon>

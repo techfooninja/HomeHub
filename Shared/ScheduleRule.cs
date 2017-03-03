@@ -43,7 +43,7 @@
         }
 
         [DataMember]
-        public IEnumerable<IDevice> ApplicableDevices
+        public IEnumerable<Device> ApplicableDevices
         {
             get;
             set;

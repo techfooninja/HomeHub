@@ -1,13 +1,12 @@
-﻿namespace HomeHub.Hub
+﻿namespace HomeHub.Shared
 {
-    using HomeHub.Shared;
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
 
     [DataContract]
-    class HubDevice : IDevice
+    public class HubDevice : Device
     {
         private static List<Type> _supportedSensorReadings = new List<Type>() { typeof(TemperatureReading), typeof(MotionReading) };
         private static Dictionary<DeviceFunction, bool> _supportedCommandFunctions = new Dictionary<DeviceFunction, bool>()
@@ -20,61 +19,17 @@
         {
             Id = "Hub";
             FriendlyName = "Hub";
+            IsOnline = true;
+
+            SupportedSensorReadings = _supportedSensorReadings;
+            SupportedCommandFunctions = _supportedCommandFunctions;
 
             // TODO: Initialize
             // TODO: Pull pin values from settings? Or is it better to pass them in as parameters?
             // TODO: Track Furnace/Fan hours for filter?
         }
 
-        [DataMember]
-        public string FriendlyName
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        public string Id
-        {
-            get;
-            private set;
-        }
-
-        [DataMember]
-        public bool IsOnline
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        [DataMember]
-        public DateTime LastHeartBeat
-        {
-            get;
-            private set;
-        }
-
-        [DataMember]
-        public IReadOnlyDictionary<DeviceFunction,bool> SupportedCommandFunctions
-        {
-            get
-            {
-                return _supportedCommandFunctions;
-            }
-        }
-
-        [DataMember]
-        public IEnumerable<Type> SupportedSensorReadings
-        {
-            get
-            {
-                return _supportedSensorReadings;
-            }
-        }
-
-        public Task<bool> SendCommands(IEnumerable<DeviceCommand> commands)
+        public override Task<bool> SendCommands(IEnumerable<DeviceCommand> commands)
         {
             var newTask = Task.Run<bool>(() =>
             {
@@ -108,7 +63,7 @@
             return newTask;
         }
 
-        public Task<IEnumerable<ISensorReading>> TakeReadings()
+        public override Task<IEnumerable<ISensorReading>> TakeReadings()
         {
             Task<IEnumerable<ISensorReading>> newTask = Task.Run<IEnumerable<ISensorReading>>(() =>
             {

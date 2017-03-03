@@ -110,7 +110,8 @@
     <Compile Include="DefaultRule.cs" />
     <Compile Include="DeviceCommand.cs" />
     <Compile Include="DeviceFunction.cs" />
-    <Compile Include="IDevice.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="HubDevice.cs" />
     <Compile Include="NetworkHelpers.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="ISensorReading.cs" />
