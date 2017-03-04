@@ -1,14 +1,16 @@
 ﻿namespace HomeHub.Client.Converters
 {
+    using Shared;
     using System;
-    using Windows.UI.Xaml.Controls;
+    using System.Collections.Generic;
     using Windows.UI.Xaml.Data;
 
-    public class PlayPauseSymbolConverter : IValueConverter
+    public class DeviceFunctionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return (bool)value ? Symbol.Play : Symbol.Pause;
+            KeyValuePair<DeviceFunction, bool> kvp = (KeyValuePair<DeviceFunction, bool>)value;
+            return String.Format("{0}: {1}", Enum.GetName(typeof(DeviceFunction), kvp.Key), kvp.Value ? "On" : "Off");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

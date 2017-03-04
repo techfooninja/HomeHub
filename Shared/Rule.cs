@@ -14,6 +14,27 @@
         protected TimeSpan _endTime;
         protected string _id;
 
+        public Rule()
+        {
+
+        }
+
+        public Rule(Rule newRule)
+        {
+            CopyFromRule(newRule);
+        }
+
+        public virtual void CopyFromRule(Rule newRule)
+        {
+            Id = newRule.Id;
+            StartTime = newRule.StartTime;
+            EndTime = newRule.EndTime;
+            HighTemperature = newRule.HighTemperature;
+            LowTemperature = newRule.LowTemperature;
+            IsEnabled = newRule.IsEnabled;
+            Expiration = newRule.Expiration;
+        }
+
         [DataMember]
         public string Id
         {

@@ -8,7 +8,7 @@
     [DataContract]
     public class Device
     {
-        protected Device()
+        public Device()
         {
             SupportedSensorReadings = new List<Type>();
             SupportedCommandFunctions = new Dictionary<DeviceFunction, bool>();
@@ -43,6 +43,25 @@
         }
 
         [DataMember]
+        public int UsageMinutes
+        {
+            get;
+            protected set;
+        }
+
+        [DataMember]
+        public int MaxUsageMinutes
+        {
+            get;
+            set;
+        }
+
+        public void ResetUsage()
+        {
+            UsageMinutes = 0;
+        }
+
+        [DataMember]
         public IEnumerable<Type> SupportedSensorReadings
         {
             get;
@@ -54,6 +73,7 @@
             throw new NotImplementedException("Cannot call TakeReadings on a base Device object");
         }
 
+        [DataMember]
         public IReadOnlyDictionary<DeviceFunction,bool> SupportedCommandFunctions
         {
             get;

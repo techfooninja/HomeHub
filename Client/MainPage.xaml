@@ -17,8 +17,10 @@
             <localConverters:TimeSpanToStringConverter x:Key="TimeConverter" />
             <localConverters:DateTimeToStringConverter x:Key="DateConverter" />
             <localConverters:BooleanToFontWeightConverter x:Key="FontWeightConverter" />
-            <localConverters:PlayPauseSymbolConverter x:Key="PlayPauseConverter" />
             <localConverters:RuleTypeSymbolConverter x:Key="RuleTypeConverter" />
+            <localConverters:DeviceFunctionConverter x:Key="FunctionConverter" />
+            <localConverters:SensorTypeConverter x:Key="SensorTypeConverter" />
+            <localConverters:DateTimeElapsedConverter x:Key="DateTimeElapsedConverter" />
         </ResourceDictionary>
     </Page.Resources>
     
@@ -67,12 +69,10 @@
                                         <Run Text="{x:Bind HighTemperature, Mode=OneWay, Converter={StaticResource TemperatureConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                         <Run Text="{x:Bind CurrentTemperatureUnit, Mode=OneWay}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                     </TextBlock>
-                                    <Button Margin="10" Grid.Column="2" Grid.RowSpan="3" Tapped="{x:Bind ToggleIsEnabled}" Visibility="{x:Bind CanDisable, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" Background="Transparent">
-                                        <SymbolIcon Symbol="{Binding IsEnabled, Mode=OneWay, Converter={StaticResource PlayPauseConverter}}"/>
-                                    </Button>
-                                    <Button Margin="10" Grid.Column="3" Grid.RowSpan="3" Tapped="{x:Bind Delete}" Visibility="{x:Bind CanDelete, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" Background="Transparent">
+                                    <Button Margin="10" Grid.Column="2" Grid.RowSpan="3" Tapped="{x:Bind Delete}" Visibility="{x:Bind CanDelete, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" Background="Transparent">
                                         <SymbolIcon Symbol="Delete"/>
                                     </Button>
+                                    <ToggleSwitch Margin="10" Grid.Column="3" Grid.RowSpan="3" IsOn="{Binding IsEnabled, Mode=TwoWay}" OnContent="Enabled" OffContent="Disabled" Toggled="{x:Bind ToggleIsEnabled}" IsEnabled="{x:Bind CanDisable, Mode=OneWay}" Background="Transparent" />
                                     <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind EndTime, Mode=OneWay, Converter={StaticResource TimeConverter}}" Visibility="{x:Bind HasTimes, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={StaticResource FontWeightConverter}}" />
                                     <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind CanExpire, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
                                         <TextBlock>
@@ -91,8 +91,43 @@
                     <SymbolIcon Symbol="AttachCamera" />
                 </PivotItem.Header>
                 <StackPanel>
-                    <Button Content="StartBlockingProgress" Tapped="StartBlockingProgress_Tapped" />
-                    <Button Content="StartNonBlockingProgress" Tapped="StartNonBlockingProgress_Tapped" />
+                    <TextBlock Margin="10" Text="Devices" FontSize="30" />
+                    <ListView ItemsSource="{x:Bind Thermostat.Devices, Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="localVM:DeviceViewModel">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" FontSize="20" Text="{Binding FriendlyName, Mode=OneWay}" />
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                                        <TextBlock FontSize="16" Text="    Last seen" />
+                                        <TextBlock FontSize="16" Text="{Binding LastHeartBeat, Mode=OneWay, Converter={StaticResource DateTimeElapsedConverter}}" />
+                                    </StackPanel>
+                                    <GridView Grid.Column="1" Grid.RowSpan="2" ItemsSource="{Binding SensorTypes, Mode=OneWay}" IsItemClickEnabled="False" >
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Margin="10" Text="{Binding Mode=OneWay, Converter={StaticResource SensorTypeConverter}}" />
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>
+                                    <GridView Grid.Column="2" Grid.RowSpan="2" ItemsSource="{Binding FunctionStatus, Mode=OneWay}" IsItemClickEnabled="False" SelectionMode="None">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Margin="10" Text="{Binding Mode=OneWay, Converter={StaticResource FunctionConverter}}" />
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackPanel>
             </PivotItem>
             <PivotItem x:Name="SettingsPivot">

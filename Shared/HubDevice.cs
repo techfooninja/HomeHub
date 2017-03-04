@@ -3,11 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
 
     [DataContract]
     public class HubDevice : Device
     {
+        private Timer _usageTimer;
         private static List<Type> _supportedSensorReadings = new List<Type>() { typeof(TemperatureReading), typeof(MotionReading) };
         private static Dictionary<DeviceFunction, bool> _supportedCommandFunctions = new Dictionary<DeviceFunction, bool>()
         {
@@ -27,6 +29,20 @@
             // TODO: Initialize
             // TODO: Pull pin values from settings? Or is it better to pass them in as parameters?
             // TODO: Track Furnace/Fan hours for filter?
+
+            _usageTimer = new Timer(UsageCallback, null, 0, 60000);
+        }
+
+        private void UsageCallback(object state)
+        {
+            foreach (var function in SupportedCommandFunctions)
+            {
+                if (function.Value)
+                {
+                    UsageMinutes++;
+                    return;
+                }
+            }
         }
 
         public override Task<bool> SendCommands(IEnumerable<DeviceCommand> commands)

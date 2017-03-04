@@ -103,8 +103,8 @@
 
             try
             {
-                Thermostat.Instance.AddRule(rule);
-                return new PutResponse(PutResponse.ResponseStatus.OK);
+                bool ret = Thermostat.Instance.AddRule(rule);
+                return new PutResponse(ret ? PutResponse.ResponseStatus.OK : PutResponse.ResponseStatus.NotFound);
             }
             catch (Exception e)
             {
@@ -119,8 +119,8 @@
 
             try
             {
-                Thermostat.Instance.UpdateRule(rule);
-                return new PostResponse(PostResponse.ResponseStatus.Created);
+                bool ret = Thermostat.Instance.UpdateRule(rule);
+                return new PostResponse(ret ? PostResponse.ResponseStatus.Created : PostResponse.ResponseStatus.Conflict);
             }
             catch (Exception e)
             {

@@ -9,6 +9,7 @@
     public class ThermostatViewModel : NotificationBase<ThermostatProxy>
     {
         ObservableCollection<RuleViewModel> _rules = new ObservableCollection<RuleViewModel>();
+        ObservableCollection<DeviceViewModel> _devices = new ObservableCollection<DeviceViewModel>();
         bool hasFailedUpdate = false;
 
         public ThermostatViewModel(ThermostatProxy proxy = null) : base(proxy)
@@ -34,6 +35,7 @@
                 {
                     SetProperty(ref This, value);
                     ReloadRules(This.Rules);
+                    ReloadDevices(This.Devices);
                     RaisePropertyChanged("CurrentTemperature");
                 }
             }
@@ -75,7 +77,7 @@
             foreach (var rule in rules)
             {
                 var rvm = new RuleViewModel(rule);
-                rvm.PropertyChanged += Rule_PropertyChanged;
+                rvm.PropertyChanged += Rule_PropertyChanged; // TODO: Necessary?
 
                 if (rule.Id == This.CurrentRuleId)
                 {
@@ -86,6 +88,25 @@
             }
 
             RaisePropertyChanged("Rules");
+        }
+
+        public ObservableCollection<DeviceViewModel> Devices
+        {
+            get { return _devices; }
+            set { SetProperty(ref _devices, value); }
+        }
+
+        private void ReloadDevices(IEnumerable<Device> devices)
+        {
+            _devices.Clear();
+
+            foreach (var device in devices)
+            {
+                var dvm = new DeviceViewModel(device);
+                _devices.Add(dvm);
+            }
+
+            RaisePropertyChanged("Devices");
         }
 
         private void Rule_PropertyChanged(object sender, PropertyChangedEventArgs e)

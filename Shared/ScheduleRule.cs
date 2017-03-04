@@ -16,6 +16,15 @@
             Id = String.Format("Schedule_{0}", IdCounter);
         }
 
+        public override void CopyFromRule(Rule newRule)
+        {
+            base.CopyFromRule(newRule);
+            if (newRule is ScheduleRule)
+            {
+                ApplicableDevices = ((ScheduleRule)newRule).ApplicableDevices;
+            }
+        }
+
         private static int _idCounter = 1;
 
         private static int IdCounter

@@ -153,10 +153,16 @@
             SettingsHelper.SetProperty(_devices, true, "Devices");
         }
 
-        public void AddRule(Rule newRule)
+        public bool AddRule(Rule newRule)
         {
+            if (_rules.Count(r => r.Id == newRule.Id) > 0)
+            {
+                return false;
+            }
+
             _rules.Add(newRule);
             SaveRules();
+            return true;
         }
 
         public bool DeleteRule(string id)
@@ -166,11 +172,19 @@
             return success;
         }
 
-        public void UpdateRule(Rule rule)
+        public bool UpdateRule(Rule rule)
         {
-            DeleteRule(rule.Id);
-            AddRule(rule);
-            SaveRules();
+            try
+            {
+                var currentRule = _rules.Single(r => r.Id == rule.Id);
+                currentRule.CopyFromRule(rule);
+                SaveRules();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private void RemoveStaleRules()
